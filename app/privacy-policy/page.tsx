@@ -11,13 +11,10 @@ export default function Page() {
         </h2>
         <div>
           <p>
-            When you log in to the site we may collect some information you
-            provide to us at your own volition such as your email address and
-            username.
-          </p>
-          <p>
-            If you do not log in, non of your personal information will be
-            collected by us.
+            When you log in to the site we may collect some information from you
+            such as your email address and username. You give us this
+            information at your own volition. If you do not log in, non of your
+            personal information will be collected by us.
           </p>
         </div>
         <div className="mt-2">
@@ -30,10 +27,10 @@ export default function Page() {
 
         <h2 className="text-2xl font-medium mb-2 mt-4">Use of Cookies</h2>
         <div>
-          <p>To keep you logged in we need to keep track of your session.</p>
           <p>
-            We do this through a cookie that stores a unique id associated with
-            your session.
+            To keep you logged in we need to keep track of your session. We do
+            this through a cookie that stores a unique id associated with your
+            session.
           </p>
         </div>
       </div>
