@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --nav-height: 50px;
+}
+
+body {
+  color: #e8f7f6;
+  background-color: #222026;
+}
+
+.spinner {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  border: 6px solid;
+  box-sizing: border-box;
+  animation: animloader 1s linear infinite alternate;
+}
+
+@keyframes animloader {
+  0% {
+    border-color: white rgba(255, 255, 255, 0) rgba(255, 255, 255, 0)
+      rgba(255, 255, 255, 0);
+  }
+  33% {
+    border-color: white white rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+  }
+  66% {
+    border-color: white white white rgba(255, 255, 255, 0);
+  }
+  100% {
+    border-color: white white white white;
+  }
+}
+
+.background-gradient {
+  background: linear-gradient(
+    90deg,
+    rgba(3, 204, 112, 0.25) 0%,
+    rgba(84, 200, 231, 0.25) 33%,
+    rgba(243, 39, 52, 0.25) 63%,
+    rgba(236, 166, 16, 0.25) 100%
+  );
+}
+
+::-webkit-scrollbar {
+  width: 0.25rem;
+  height: 0.25rem;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  background-color: #0f0912;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #e8f7f6c8;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #e8f7f6;
+  width: 0.5rem;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
