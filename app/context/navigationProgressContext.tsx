@@ -27,7 +27,7 @@ export function ProgressBar({ children }: { children: React.ReactNode }) {
   return (
     <ProgressBarContext.Provider value={progressActions}>
       {
-        <div className="h-0.5 absolute w-full z-[1000]">
+        <div className="h-0.5 fixed w-full z-[1000]">
           <div
             className={cn(
               "absolute transition-transform ease-out duration-1000 scale-0 origin-left h-full w-full top-0 left-0 block bg-accent",

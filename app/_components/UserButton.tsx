@@ -71,7 +71,26 @@ export function EditProfileModal() {
         <Dialog.DialogClose className="absolute top-1 right-1">
           <X className="opacity-50 hover:opacity-100 transition-colors duration-35" />
         </Dialog.DialogClose>
-        <EditProfileForm />
+        <div
+          className={`px-6 py-12 bg-backdrop max-w-128 w-full flex flex-col
+    gap-3 rounded-md border border-border-grey text-nowrap
+    `}
+        >
+          <div className="flex w-full items-center justify-center opacity-75">
+            <div
+              style={{ height: 1 }}
+              className="w-full opacity-25 bg-text"
+            ></div>
+            <Dialog.Title className="font-medium px-3">
+              Change Profile Name
+            </Dialog.Title>
+            <div
+              style={{ height: 1 }}
+              className="w-full opacity-25 bg-text"
+            ></div>
+          </div>
+          <EditProfileForm />
+        </div>
       </Dialog.Content>
     </Dialog.Portal>
   );
