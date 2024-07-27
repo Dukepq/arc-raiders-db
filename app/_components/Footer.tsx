@@ -1,6 +1,7 @@
 import Image from "next/image";
 import logo from "@/public/logo-circular.svg";
 import Link from "next/link";
+import ProgressLink from "./ui/ProgressLink";
 
 export default function Footer() {
   return (
@@ -9,12 +10,18 @@ export default function Footer() {
         <div className="[&>*]:block text-text/80 [&>*]:transition-colors text-sm">
           <Image className="w-8 mb-2" alt="logo" src={logo} />
 
-          <Link className="hover:text-text/100 mb-1" href={"/"}>
+          <ProgressLink
+            className="hover:text-text/100 mb-1"
+            href={"/privacy-policy"}
+          >
             Privacy policy
-          </Link>
-          <Link className="hover:text-text/100 mb-1" href={"/"}>
+          </ProgressLink>
+          <ProgressLink
+            className="hover:text-text/100 mb-1"
+            href={"/terms-and-conditions"}
+          >
             Terms of service
-          </Link>
+          </ProgressLink>
         </div>
         <hr className="opacity-50 my-3" />
         <div className="flex text-sm opacity-80">
