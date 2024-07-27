@@ -3,7 +3,7 @@
 import { useNavigationProgressContext } from "@/app/context/navigationProgressContext";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ComponentProps, startTransition } from "react";
+import { startTransition } from "react";
 
 type ProgressLinkProps = { children: React.ReactNode; href: string } & Omit<
   LinkProps,
@@ -14,7 +14,7 @@ export default function ProgressLink({
   children,
   href,
   ...props
-}: ComponentProps<typeof Link>) {
+}: ProgressLinkProps) {
   const pathname = usePathname();
   const router = useRouter();
   const progress = useNavigationProgressContext();
