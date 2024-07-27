@@ -91,7 +91,7 @@ const config: Config = {
           "slideDownAndFade 200ms cubic-bezier(0.16, 1, 0.3, 1)",
         slideLeftAndFade:
           "slideLeftAndFade 200ms cubic-bezier(0.16, 1, 0.3, 1)",
-        fadeOut: "fadeOut 350ms forwards ease-out",
+        fadeOut: "fadeOut 300ms ease-out 300ms forwards",
       },
     },
   },
