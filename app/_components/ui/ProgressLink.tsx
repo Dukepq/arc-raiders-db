@@ -2,7 +2,7 @@
 
 import { useNavigationProgressContext } from "@/app/context/navigationProgressContext";
 import Link, { LinkProps } from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ComponentProps, startTransition } from "react";
 
 type ProgressLinkProps = { children: React.ReactNode; href: string } & Omit<
@@ -15,6 +15,7 @@ export default function ProgressLink({
   href,
   ...props
 }: ComponentProps<typeof Link>) {
+  const pathname = usePathname();
   const router = useRouter();
   const progress = useNavigationProgressContext();
   return (
@@ -22,6 +23,7 @@ export default function ProgressLink({
       href={href}
       onClick={(e) => {
         e.preventDefault();
+        if (pathname === href) return;
         progress.start();
 
         startTransition(() => {
