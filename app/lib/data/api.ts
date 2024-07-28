@@ -1,3 +1,4 @@
+import DL from "@/app/server/data-layer";
 import { Item } from "@/app/types/itemTypes";
 import { QueryParameters } from "@/app/types/queries";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -37,6 +38,21 @@ export const fetchItemsWithAmountMatching = async (query: QueryParameters) => {
     totalMatchingItems: number;
   }>(url);
 
+  return data;
+};
+
+export const fetchItemComments = async (
+  itemId: string,
+  params?: { offset?: string; limit?: string }
+) => {
+  const url = new URL(`/api/comments/item/${itemId}`, BASE_URL);
+  const searchParams = new URLSearchParams(params);
+
+  url.search = searchParams.toString();
+
+  const [data] = await fetchWithErrors<
+    ReturnType<typeof DL.query.comments.getItemComments>
+  >(url);
   return data;
 };
 

@@ -10,3 +10,8 @@ export const itemsBodySchema = z.object({
   rarity: z.number().optional(),
   sort: z.string().optional(),
 });
+
+export const itemCommentsSchema = z.object({
+  limit: z.coerce.number().refine((val) => !isNaN(val)),
+  offset: z.coerce.number().refine((val) => !isNaN(val)),
+});
