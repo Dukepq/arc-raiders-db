@@ -18,7 +18,7 @@ SOLVED: in next 14.2.5 https://github.com/vercel/next.js/issues/64978#issuecomme
 export default function ItemFilters() {
   return (
     <div
-      className="rounded-sm mb-4 overflow-auto flex items-center
+      className="rounded-sm mb-3 overflow-auto flex items-center
       [&>button]:flex [&>button]:items-center [&>button]:gap-1 [&>button]:bg-backdrop
       [&>button]:px-3 [&>button]:py-1.5 [&>button]:outline-none gap-3"
     >

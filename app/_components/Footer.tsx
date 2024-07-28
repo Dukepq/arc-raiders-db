@@ -1,6 +1,5 @@
 import Image from "next/image";
 import logo from "@/public/logo-circular.svg";
-import Link from "next/link";
 import ProgressLink from "./ui/ProgressLink";
 
 export default function Footer() {
@@ -25,7 +24,10 @@ export default function Footer() {
             <h3>News</h3>
             <ul>
               <li>
-                <ProgressLink className="hover:text-text/100" href="news">
+                <ProgressLink
+                  className="hover:text-text/100"
+                  href="/news/notes"
+                >
                   patch notes
                 </ProgressLink>
               </li>

@@ -93,9 +93,6 @@ export default function Page() {
               role="presentation"
             />
           </div>
-          <Suspense fallback={<TrendingSectionSkeleton />}>
-            <TrendingSection />
-          </Suspense>
         </main>
       </div>
       <Footer />
