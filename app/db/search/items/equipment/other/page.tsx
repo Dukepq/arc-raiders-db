@@ -1,6 +1,5 @@
 import { GenericItemTableRenderer } from "../../../_components/Tables";
-import { rarityNameToNum } from "@/app/lib/conversions";
-import { searchParamSchema } from "@/app/lib/validation/searchParamSchemas";
+import getDatabaseItems from "@/app/lib/getDatabaseItems";
 import DL from "@/app/server/data-layer";
 
 export default async function Page({
@@ -8,16 +7,11 @@ export default async function Page({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const { data, success } = searchParamSchema.safeParse(searchParams ?? {});
-  const resultData = success ? data : {};
-  const q = {
-    ...resultData,
-    rarity: rarityNameToNum(resultData.rarity),
-  };
-
-  const otherPromise = DL.query.items.getEquipmentOther(q);
-  const countPromise = DL.query.items.getEquipmentOtherCount(q);
-  const [other, count] = await Promise.all([otherPromise, countPromise]);
+  const [other, count] = await getDatabaseItems(
+    DL.query.items.getEquipmentOther,
+    DL.query.items.getEquipmentOtherCount,
+    searchParams
+  );
   if (!other) return null;
 
   return (
