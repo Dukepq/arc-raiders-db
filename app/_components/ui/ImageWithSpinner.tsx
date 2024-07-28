@@ -31,11 +31,10 @@ export default function ImageWithSpinner({
         className={cn(isLoading && "max-h-0", className)}
         alt="image"
       />
-      {isLoading && (
-        <div className="w-full h-full grid place-content-center">
-          <Spinner />
-        </div>
-      )}
+
+      <div className="w-full h-full grid place-content-center">
+        <Spinner loading={isLoading} />
+      </div>
     </>
   );
 }

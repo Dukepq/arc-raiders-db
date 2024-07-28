@@ -42,7 +42,7 @@ export default function TabPanels({ panels }: TabPanelsProps) {
             key={panelName}
             fallback={
               <div className="w-full flex justify-center">
-                <Spinner />
+                <Spinner loading={true} />
               </div>
             }
           >

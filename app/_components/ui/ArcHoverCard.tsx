@@ -35,18 +35,18 @@ export default function ArcHoverCard({
     })();
   }, [open, id, item]);
 
-  const shownCard = isFetching ? (
-    <Spinner />
-  ) : (
-    item && (
-      <ArcItemCard
-        category={item.category || ""}
-        description={item.description}
-        name={item.name}
-        price={item.baseValue}
-        weight={Number(item.weight)}
-      />
-    )
+  const shownCard = (
+    <Spinner loading={isFetching}>
+      {item && (
+        <ArcItemCard
+          category={item.category || ""}
+          description={item.description}
+          name={item.name}
+          price={item.baseValue}
+          weight={Number(item.weight)}
+        />
+      )}
+    </Spinner>
   );
 
   return (
