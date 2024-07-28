@@ -186,13 +186,7 @@ class Auth {
     await DL.mutation.sessions.deleteSessions(sessionIds);
   }
 
-  async updateSession(
-    sessionId: string,
-    options?: {
-      expiresAt?: Date;
-      OAuthTokens?: TokenData;
-    }
-  ) {
+  async updateSessionTtl(sessionId: string) {
     const newExpirationDate = new Date(Date.now() + this.ttl);
     const updated = await DL.mutation.sessions.updateSession(
       sessionId,

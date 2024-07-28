@@ -8,7 +8,7 @@ import {
   SetStateAction,
   useCallback,
 } from "react";
-import { checkSession } from "../lib/auth/authApi";
+import { getUserClient } from "../lib/auth/authApi";
 import { User } from "../types/auth";
 
 type Session = {
@@ -35,7 +35,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         if (loading) return;
         loading = true;
         setSession((prev) => ({ ...prev, loading: "loading" }));
-        const [retreivedUser] = await checkSession();
+        const [retreivedUser] = await getUserClient();
         if (retreivedUser) {
           setSession(() => ({
             user: retreivedUser,

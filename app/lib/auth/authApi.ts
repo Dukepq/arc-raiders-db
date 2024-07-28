@@ -5,14 +5,16 @@ if (!BASE_URL) {
   throw new Error("Base URL environment variable is required!");
 }
 
-export const checkSession = async (): Promise<[User, null] | [null, Error]> => {
+export const getUserClient = async (): Promise<
+  [User, null] | [null, Error]
+> => {
   const res = await fetch(`${BASE_URL}/api/auth/session`, { method: "POST" });
   if (!res.ok) {
     return [null, new Error(res.statusText)];
   }
-  const sessionData: User = await res.json();
+  const userData: User = await res.json();
 
-  return [sessionData, null];
+  return [userData, null];
 };
 
 export const logout = async () => {
