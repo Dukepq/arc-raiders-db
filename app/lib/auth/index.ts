@@ -1,6 +1,6 @@
 "server-only";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { cache } from "react";
 import { CookieOptions, Session, TokenData, User } from "@/app/types/auth";
 import DL from "@/app/server/data-layer";
@@ -26,12 +26,18 @@ export const getUser = cache(async (): Promise<User | null> => {
       userSession?.session &&
       userSession.session.expiresAt >= new Date(Date.now())
     ) {
-      const sessionCookie = auth.createCookie(sessionId);
-      cookies().set(
-        sessionCookie.key,
-        sessionCookie.value,
-        sessionCookie.cookieOptions
-      );
+      try {
+        const sessionCookie = auth.createCookie(sessionId);
+        cookies().set(
+          sessionCookie.key,
+          sessionCookie.value,
+          sessionCookie.cookieOptions
+        );
+      } catch (e) {
+        /*Next does not allow setting a cookie outside of an action or route handler.
+        Therefore above code could throw. This block ensures this function is still safe to use
+        inside of server components, it just won't set any cookies.*/
+      }
 
       /* refresh the oauth session if necessary */
       // const OAuthTokens = ...
