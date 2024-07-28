@@ -42,7 +42,7 @@ export function rarityToColor(rarity: number) {
       return "accent";
   }
 }
-export function raritiesToColorMap(rarities: number[]) {
+export function raritiesToColors(rarities: number[]) {
   const colorMap = rarities.map((rarity) => {
     return rarityToColor(rarity);
   });

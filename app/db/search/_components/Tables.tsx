@@ -1,4 +1,4 @@
-import { raritiesToColorMap, rarityToName } from "@/app/lib/conversions";
+import { raritiesToColors, rarityToName } from "@/app/lib/conversions";
 import ArcHoverCard, { CardTrigger } from "@/app/_components/ui/ArcHoverCard";
 import Link from "next/link";
 import RarityIcon from "@/app/_components/ui/RarityIcon";
@@ -172,7 +172,7 @@ export function GenericItemRow({
         <div className="flex justify-center">
           <RarityIcon
             className="h-6 w-1.5"
-            colors={raritiesToColorMap(availableRarities)}
+            colors={raritiesToColors(availableRarities)}
           />
         </div>
       </td>
