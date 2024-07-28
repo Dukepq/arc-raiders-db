@@ -34,7 +34,7 @@ export default async function RootLayout({
             </a>
             <Toaster position="bottom-center" duration={3000} />
             <Navbar />
-            <div className="overflow-clip min-h-[calc(100vh-48px)]">
+            <div className="overflow-clip min-h-[calc(100vh-var(--nav-height))]">
               {children}
             </div>
           </ProgressBar>
