@@ -3,6 +3,9 @@
 import { usePathname } from "next/navigation";
 import { deleteCommentAction } from "../server/actions";
 import { Button } from "./ui/Button";
+import { startTransition, useTransition } from "react";
+import { toast } from "sonner";
+import { LoaderCircle } from "lucide-react";
 
 type CommentProps = {
   username: string;
@@ -19,7 +22,6 @@ export default function Comment({
   commentId,
   deleteAble,
 }: CommentProps) {
-  const pathname = usePathname();
   return (
     <div className="flex justify-between mb-5 bg-backdrop-darker p-2 rounded-sm">
       <div>
@@ -33,18 +35,39 @@ export default function Comment({
         <p className="font-light">{content}</p>
       </div>
 
-      {deleteAble && (
-        <Button
-          className="py-0.5 px-1.5 h-fit ml-20"
-          onClick={async () => {
-            await deleteCommentAction(commentId, pathname);
-          }}
-          variant={"ghost"}
-          size={"sm"}
-        >
-          delete
-        </Button>
-      )}
+      {deleteAble && <DeleteCommentButton commentId={commentId} />}
     </div>
+  );
+}
+
+type DeleteCommentButtonProps = {
+  commentId: string;
+};
+function DeleteCommentButton({ commentId }: DeleteCommentButtonProps) {
+  const pathname = usePathname();
+  const [isPending, startTransition] = useTransition();
+
+  return (
+    <Button
+      className="py-0.5 px-1.5 h-fit ml-20"
+      onClick={async () => {
+        startTransition(async () => {
+          const result = await deleteCommentAction(commentId, pathname);
+          if (result.success) {
+            toast.success(result.message || "deleted.");
+          } else {
+            toast.error(result.message || "something went wrong.");
+          }
+        });
+      }}
+      variant={"ghost"}
+      size={"sm"}
+    >
+      {isPending ? (
+        <LoaderCircle size={15} className="animate-spin" />
+      ) : (
+        <span>delete</span>
+      )}
+    </Button>
   );
 }

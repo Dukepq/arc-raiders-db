@@ -3,6 +3,7 @@ import "server-only";
 import { db } from "@/drizzle/db";
 import { CommentTable, ItemTable, UserTable } from "@/drizzle";
 import { eq } from "drizzle-orm";
+import { ItemComment } from "@/app/types/commentTypes";
 
 const itemCommentFields = {
   content: CommentTable.content,
@@ -15,7 +16,11 @@ const itemCommentFields = {
 
 export const commentsDL = {
   query: {
-    getItemComments: async (itemId: string, offset: number, limit: number) => {
+    getItemComments: async (
+      itemId: string,
+      offset: number,
+      limit: number
+    ): Promise<ItemComment[]> => {
       const comments = await db
         .select(itemCommentFields)
         .from(ItemTable)

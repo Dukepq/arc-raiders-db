@@ -10,7 +10,7 @@ export const createItemCommentAction = async (
 ) => {
   const user = await getUser();
   if (!user) {
-    return { success: false, message: "user not authenticated" };
+    return { success: false, message: "not authenticated." };
   }
   try {
     await DL.mutation.comments.createItemComment({
@@ -32,20 +32,20 @@ export const deleteCommentAction = async (
   try {
     const user = await getUser();
     if (!user) {
-      return { success: false, message: "not authenticated" };
+      return { success: false, message: "not authenticated." };
     }
 
     const comment = await DL.query.comments.getComment(id);
     if (comment.userId !== user.userId) {
-      return { success: false, message: "not authenticated" };
+      return { success: false, message: "not authenticated." };
     }
 
     const deleted = await DL.mutation.comments.deleteComment(id);
     revalidatePath(revalidatePathname);
 
-    return { success: true, message: "comment deleted", data: deleted };
+    return { success: true, message: "comment deleted.", data: deleted };
   } catch (e) {
-    return { success: false, message: "something went wrong" };
+    return { success: false, message: "something went wrong." };
   }
 };
 
@@ -54,12 +54,12 @@ export const changeUsernameAction = async (
 ): Promise<{ success: boolean; message: string }> => {
   const user = await getUser();
   if (!user) {
-    return { success: false, message: "unauthenticated" };
+    return { success: false, message: "not authenticated." };
   }
   try {
     await DL.mutation.users.updateUsername(user.userId, newName);
     return { success: true, message: "username updated!" };
   } catch {
-    return { success: false, message: "username already taken" };
+    return { success: false, message: "username already taken." };
   }
 };
