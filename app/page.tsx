@@ -9,6 +9,7 @@ import Image from "next/image";
 import mapImage from "@/public/blank.png";
 import { Map } from "lucide-react";
 import Footer from "./_components/Footer";
+import ProgressLink from "./_components/ui/ProgressLink";
 
 export default function Page() {
   return (
@@ -24,7 +25,7 @@ export default function Page() {
               Find all information you need about weapons, gear, materials and
               more.
             </p>
-            <Link
+            <ProgressLink
               href={"/db/search"}
               className={cn(
                 buttonOptions({ variant: "default", size: "lg" }),
@@ -32,7 +33,7 @@ export default function Page() {
               )}
             >
               Browse Database
-            </Link>
+            </ProgressLink>
           </div>
 
           <div className="hidden absolute w-128 h-full -right-16 bottom-0 z-10 lg:block select-none">

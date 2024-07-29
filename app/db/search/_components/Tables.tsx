@@ -8,6 +8,7 @@ import Pagination from "@/app/_components/ui/Pagination";
 import { Item } from "@/app/types/itemTypes";
 import TableSortIndicator from "./TableSortIndicator";
 import { searchParamSchema } from "@/app/lib/validation/searchParamSchemas";
+import ProgressLink from "@/app/_components/ui/ProgressLink";
 
 type GenericItemTableRendererProps = {
   items: (Omit<Item, "variants"> & Partial<Pick<Item, "variants">>)[];
@@ -151,20 +152,20 @@ export function GenericItemRow({
         <td className="min-w-16 w-16">
           <div className="flex items-center">
             <CardTrigger>
-              <Link className="inline-block" href={"/db/item/" + id}>
+              <ProgressLink className="inline-block" href={"/db/item/" + id}>
                 <ArcIcon size={48} src={icon} rarity={rarityName} alt={name} />
-              </Link>
+              </ProgressLink>
             </CardTrigger>
           </div>
         </td>
         <td className="text-start  ">
           <CardTrigger>
-            <Link
+            <ProgressLink
               href={"/db/item/" + id}
               className="text-xl inline-block capitalize truncate"
             >
               {name}
-            </Link>
+            </ProgressLink>
           </CardTrigger>
         </td>
       </ArcHoverCard>
