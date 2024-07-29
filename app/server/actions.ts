@@ -2,6 +2,7 @@
 import { revalidatePath } from "next/cache";
 import DL from "./data-layer";
 import { getUser } from "../lib/auth";
+import { profanityFilter } from "../lib/profanityFilter";
 
 export const createItemCommentAction = async (
   itemId: string,
@@ -13,10 +14,11 @@ export const createItemCommentAction = async (
     return { success: false, message: "not authenticated." };
   }
   try {
+    const filteredComment = await profanityFilter.censorProfanity(content);
     await DL.mutation.comments.createItemComment({
       itemId,
       userId: user.userId,
-      content,
+      content: filteredComment,
     });
     revalidatePath(revalidate);
     return { success: true, message: "comment created!" };
