@@ -11,6 +11,8 @@ import cn from "../utils/cn";
 import { RefreshCw } from "lucide-react";
 import { fetchItemsWithAmountMatching } from "../lib/data/api";
 
+// TODO: refactor to use a dropdown menu
+
 export default function NavSearchBar() {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [search, setSearch] = useState("");
@@ -140,7 +142,7 @@ export default function NavSearchBar() {
             if ("nav-input" !== e.target?.id) setModalOpen(() => false);
           }}
           onOpenAutoFocus={(e) => e.preventDefault()}
-          className="border-y border-border-grey w-60 mt-2 z-50 max-h-72 overflow-auto"
+          className="border-y border-border-grey rounded-sm w-60 mt-2 z-50 max-h-72 overflow-auto"
         >
           <ul autoFocus className="capitalize">
             {items &&

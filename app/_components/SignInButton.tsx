@@ -18,14 +18,20 @@ export default function SignInOutButton() {
   return <SignInButton />;
 }
 
-export function SignInButton() {
+type SignInButtonProps = {
+  className?: React.AllHTMLAttributes<HTMLButtonElement>["className"];
+};
+export function SignInButton({ className }: SignInButtonProps) {
   const { loading } = useSessionContext();
   return (
     <DialogWrap
       trigger={
         <button
           disabled={loading === "loading"}
-          className={cn(buttonOptions({ variant: "timid", size: "default" }))}
+          className={cn(
+            buttonOptions({ variant: "timid", size: "default" }),
+            className
+          )}
         >
           Sign In
         </button>

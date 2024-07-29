@@ -8,12 +8,14 @@ type ModalProps = {
   children: React.ReactNode;
   overlayStyle?: string;
   onInteractOutside?: () => void;
+  describedBy?: string;
 };
 export default function Dialog({
   trigger,
   children,
   overlayStyle,
   onInteractOutside,
+  describedBy,
 }: ModalProps) {
   return (
     <D.Root>
@@ -26,6 +28,7 @@ export default function Dialog({
           )}
         />
         <D.Content
+          aria-describedby={describedBy}
           onInteractOutside={onInteractOutside}
           className="data-[state=open]:animate-modalSlideUpAndFade fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] z-[100]"
         >

@@ -58,19 +58,8 @@ export default async function ItemCommentSection({
             <span className="font-light">
               You need to be logged in to comment.
             </span>
-            <Dialog
-              trigger={
-                <Button
-                  size={"sm"}
-                  variant={"ghost"}
-                  className="ml-3 px-2 py-0.5 text-sm font-bold"
-                >
-                  Sign In
-                </Button>
-              }
-            >
-              <SignInButton />
-            </Dialog>
+
+            <SignInButton className="bg-transparent text-sm font-bold hover:bg-border-grey/20 ml-6" />
           </div>
         )}
       </div>
