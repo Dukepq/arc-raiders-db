@@ -1,7 +1,4 @@
-import {
-  ALLOWED_SEARCH_PARAMS,
-  MAX_ITEMS_PER_PAGE,
-} from "@/app/config/constants";
+import { MAX_ITEMS_PER_PAGE } from "@/app/config/constants";
 import cn from "@/app/utils/cn";
 import Link, { LinkProps } from "next/link";
 import {
@@ -10,7 +7,6 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-// import { formatRSCSearchParams } from "@/app/lib/queryParamHelpers";
 import { searchParamSchema } from "@/app/lib/validation/searchParamSchemas";
 
 type PaginationProps = {
@@ -27,22 +23,17 @@ export default function Pagination({
     Object.entries(data || {}).filter(([key, value]) => !!value && !!key)
   );
 
-  const pageParam = params["page"];
-  const currPage = typeof pageParam === "string" ? pageParam : "1";
+  const page = data?.page ?? 0;
 
   const pagesCount = Math.ceil(totalItems / MAX_ITEMS_PER_PAGE);
   if (pagesCount <= 1) {
     return null;
   }
 
-  let page = Number(currPage);
-  if (isNaN(page)) page = 1;
-
   const prevPage = Math.max(page - 1, 1);
   const nextPage = Math.min(page + 1, pagesCount);
 
   const surroundingPages = getSurroundingPages(Math.max(page, 1), pagesCount);
-
   return (
     <nav
       aria-label="pagination"
