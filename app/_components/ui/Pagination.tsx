@@ -23,13 +23,12 @@ export default function Pagination({
     Object.entries(data || {}).filter(([key, value]) => !!value && !!key)
   );
 
-  const page = data?.page ?? 0;
-
   const pagesCount = Math.ceil(totalItems / MAX_ITEMS_PER_PAGE);
   if (pagesCount <= 1) {
     return null;
   }
 
+  const page = data?.page ?? 1;
   const prevPage = Math.max(page - 1, 1);
   const nextPage = Math.min(page + 1, pagesCount);
 
