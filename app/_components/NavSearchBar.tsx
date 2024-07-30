@@ -187,7 +187,7 @@ export default function NavSearchBar() {
                     }}
                     href={`/db/item/${item.id}`}
                     className={cn(
-                      "flex gap-3 items-center p-2 border-y-border-grey bg-backdrop/50 hover:bg-primary/25 transition-colors duration-100",
+                      "flex gap-3 items-center p-2 border-y-border-grey bg-backdrop/50 hover:bg-primary/25 transition-colors duration-100 overflow-hidden",
                       index === activeIndex && "bg-primary/50"
                     )}
                   >
@@ -198,8 +198,7 @@ export default function NavSearchBar() {
                       width={30}
                       height={30}
                     />
-
-                    {item.name}
+                    <span className="truncate">{item.name}</span>
                   </Link>
                 </li>
               ))}
