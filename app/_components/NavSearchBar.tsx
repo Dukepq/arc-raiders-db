@@ -109,6 +109,7 @@ export default function NavSearchBar() {
   }, [activeIndex]);
 
   useEffect(() => {
+    if (debouncedSearch.length < 3) return;
     (async () => {
       setLoading(true);
       const [res, error] = await fetchItemsWithAmountMatching({
@@ -134,6 +135,54 @@ export default function NavSearchBar() {
       setLoading(false);
     })();
   }, [debouncedSearch]);
+
+  let itemList: React.ReactNode | undefined;
+
+  if (debouncedSearch.length >= 3) {
+    itemList = (
+      <ul
+        className="scrollbar-sm rounded-sm w-60 mt-2 max-h-64 overflow-auto capitalize animate-slideDownAndFade"
+        onScroll={handleScrollEnd}
+      >
+        {items &&
+          items.data.map((item, index) => (
+            <li
+              key={index}
+              ref={(e) => {
+                listItemsRef.current[index] = e;
+              }}
+            >
+              <Link
+                onClick={() => {
+                  setModalOpen(false);
+                  setSearch("");
+                }}
+                href={`/db/item/${item.id}`}
+                className={cn(
+                  "flex items-center gap-3 p-2 bg-backdrop/50 hover:bg-primary/25 transition-colors duration-100 overflow-hidden",
+                  index === activeIndex && "bg-primary/50"
+                )}
+              >
+                <Image
+                  className="rounded-sm"
+                  src={item.icon}
+                  alt="icon"
+                  width={30}
+                  height={30}
+                />
+                <span className="truncate">{item.name}</span>
+              </Link>
+            </li>
+          ))}
+      </ul>
+    );
+  } else {
+    itemList = (
+      <div className="bg-backdrop/20 p-2 text-center text-sm">
+        start typing to search
+      </div>
+    );
+  }
 
   return (
     <Popover.Root open={modalOpen}>
@@ -166,43 +215,9 @@ export default function NavSearchBar() {
             if ("nav-input" !== e.target?.id) setModalOpen(() => false);
           }}
           onOpenAutoFocus={(e) => e.preventDefault()}
-          className="bg-red"
+          className="bg-red backdrop-blur-md w-60"
         >
-          <ul
-            className="scrollbar-sm rounded-sm w-60 backdrop-blur-md mt-2 max-h-64 overflow-auto capitalize animate-slideDownAndFade"
-            onScroll={handleScrollEnd}
-          >
-            {items &&
-              items.data.map((item, index) => (
-                <li
-                  key={index}
-                  ref={(e) => {
-                    listItemsRef.current[index] = e;
-                  }}
-                >
-                  <Link
-                    onClick={() => {
-                      setModalOpen(false);
-                      setSearch("");
-                    }}
-                    href={`/db/item/${item.id}`}
-                    className={cn(
-                      "flex gap-3 items-center p-2 border-y-border-grey bg-backdrop/50 hover:bg-primary/25 transition-colors duration-100 overflow-hidden",
-                      index === activeIndex && "bg-primary/50"
-                    )}
-                  >
-                    <Image
-                      className="rounded-sm"
-                      src={item.icon}
-                      alt="icon"
-                      width={30}
-                      height={30}
-                    />
-                    <span className="truncate">{item.name}</span>
-                  </Link>
-                </li>
-              ))}
-          </ul>
+          {itemList}
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>
