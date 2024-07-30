@@ -109,7 +109,14 @@ export default function NavSearchBar() {
   }, [activeIndex]);
 
   useEffect(() => {
-    if (debouncedSearch.length < 3) return;
+    if (debouncedSearch.length < 3) {
+      // empty previous search results
+      setItems(() => ({
+        data: [],
+        allLoaded: false,
+      }));
+      return;
+    }
     (async () => {
       setLoading(true);
       const [res, error] = await fetchItemsWithAmountMatching({
