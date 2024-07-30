@@ -50,7 +50,6 @@ body {
 
 ::-webkit-scrollbar {
   width: 0.25rem;
-  height: 0.25rem;
 }
 
 ::-webkit-scrollbar-track {
@@ -64,7 +63,18 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: #e8f7f6;
-  width: 0.5rem;
+}
+
+.scrollbar-sm::-webkit-scrollbar {
+  width: 0.2rem;
+}
+.scrollbar-sm::-webkit-scrollbar-thumb {
+  background-color: #e8f7f6c8;
+  border-radius: 1rem;
+}
+
+.scrollbar-sm::-webkit-scrollbar-track {
+  background-color: rgb(15 9 18 / 0.5);
 }
 
 @layer utilities {

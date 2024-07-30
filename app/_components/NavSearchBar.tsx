@@ -169,7 +169,7 @@ export default function NavSearchBar() {
           className="bg-red"
         >
           <ul
-            className="border-y border-border-grey rounded-sm w-60 mt-2 max-h-64 overflow-auto capitalize"
+            className="scrollbar-sm rounded-sm w-60 backdrop-blur-md mt-2 max-h-64 overflow-auto capitalize animate-slideDownAndFade"
             onScroll={handleScrollEnd}
           >
             {items &&
@@ -186,23 +186,20 @@ export default function NavSearchBar() {
                       setSearch("");
                     }}
                     href={`/db/item/${item.id}`}
+                    className={cn(
+                      "flex gap-3 items-center p-2 border-y-border-grey bg-backdrop/50 hover:bg-primary/25 transition-colors duration-100",
+                      index === activeIndex && "bg-primary/50"
+                    )}
                   >
-                    <div
-                      className={cn(
-                        "flex gap-3 items-center p-2 border-y border-y-border-grey bg-backdrop hover:bg-primary",
-                        index === activeIndex && "bg-primary"
-                      )}
-                    >
-                      <Image
-                        className="rounded-sm"
-                        src={item.icon}
-                        alt="icon"
-                        width={30}
-                        height={30}
-                      />
+                    <Image
+                      className="rounded-sm"
+                      src={item.icon}
+                      alt="icon"
+                      width={30}
+                      height={30}
+                    />
 
-                      {item.name}
-                    </div>
+                    {item.name}
                   </Link>
                 </li>
               ))}
