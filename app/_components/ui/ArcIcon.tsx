@@ -1,6 +1,6 @@
 import Image, { ImageProps } from "next/image";
 import ArcRarityOverlay from "./ArcIconRarityOverlay";
-import { Rarities } from "@/app/config/config";
+import { Rarities } from "@/app/config/constants";
 import cn from "@/app/utils/cn";
 
 type ArcIconProps = {

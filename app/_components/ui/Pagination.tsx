@@ -1,4 +1,7 @@
-import { ALLOWED_SEARCH_PARAMS, MAX_ITEMS_PER_PAGE } from "@/app/config/config";
+import {
+  ALLOWED_SEARCH_PARAMS,
+  MAX_ITEMS_PER_PAGE,
+} from "@/app/config/constants";
 import cn from "@/app/utils/cn";
 import Link, { LinkProps } from "next/link";
 import {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ArcIcon from "./ArcIcon";
-import { Rarities } from "@/app/config/config";
+import { Rarities } from "@/app/config/constants";
 
 type itemCardProps = {
   id: string;

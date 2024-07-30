@@ -1,4 +1,4 @@
-import { Rarities } from "@/app/config/config";
+import { Rarities } from "@/app/config/constants";
 import cn from "@/app/utils/cn";
 
 type ArcRarityIconProps = {
