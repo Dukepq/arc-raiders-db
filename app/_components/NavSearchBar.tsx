@@ -8,120 +8,137 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import SearchBar from "./ui/SearchBar";
 import { useRouter } from "next/navigation";
 import cn from "../utils/cn";
-import { RefreshCw } from "lucide-react";
 import { fetchItemsWithAmountMatching } from "../lib/data/api";
-
-// TODO: refactor to use a dropdown menu
+import { Loader2 } from "lucide-react";
 
 export default function NavSearchBar() {
+  const router = useRouter();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [search, setSearch] = useState("");
-  const [isLoadAvailable, setIsLoadAvailable] = useState<boolean>(true);
-  const [items, setItems] = useState<{ [key: string]: string; id: string }[]>(
-    []
-  );
-  const [selectedItem, setSelectedItem] = useState<number | null>(null);
-  const pageRef = useRef<number>(1);
-  const router = useRouter();
   const debouncedSearch = useDebounce(search, 500);
+  const [items, setItems] = useState<{
+    data: { [key: string]: string; id: string }[];
+    allLoaded: boolean;
+  }>({ data: [], allLoaded: false });
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const pageRef = useRef<number>(1);
+  const listItemsRef = useRef<(HTMLElement | null)[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleLoad = async () => {
+  const displayLoader =
+    (loading && !items.allLoaded && modalOpen) || search !== debouncedSearch;
+
+  const loadItems = useCallback(async () => {
+    setLoading(true);
     const page = (++pageRef.current).toString();
     const [data, error] = await fetchItemsWithAmountMatching({
       page: page,
       search,
     });
     if (error) return [];
-    const { items: newItems } = data;
-    if (newItems.length === 0) setIsLoadAvailable(false);
+    const { items: newItems, totalMatchingItems } = data;
     if (newItems) {
       setItems((prev) => {
-        return [...prev].concat(
-          newItems.map((item) => ({
-            id: item.itemId,
-            icon: item.icon,
-            name: item.name,
-          }))
-        );
+        return {
+          data: [...prev.data].concat(
+            newItems.map((item) => ({
+              id: item.itemId,
+              icon: item.icon,
+              name: item.name,
+            }))
+          ),
+          allLoaded: totalMatchingItems === prev.data.length + newItems.length,
+        };
       });
+    }
+    setLoading(false);
+  }, [search]);
+
+  const handleScrollEnd = async (
+    e: React.UIEvent<HTMLUListElement, UIEvent>
+  ) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    if (scrollTop + clientHeight >= scrollHeight) {
+      if (!loading && !items.allLoaded) {
+        await loadItems();
+      }
     }
   };
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (!modalOpen) return;
-      if (items.length < 0) return;
+      if (items.data.length < 0) return;
       switch (e.key) {
         case "ArrowDown": {
           e.preventDefault();
-          setSelectedItem((prev) => {
-            if (prev === null) return 0;
-            return prev + 1 > items.length ? 0 : prev + 1;
+          setActiveIndex((prev) => {
+            if (typeof prev === "number" && prev + 1 < items.data.length) {
+              return prev + 1;
+            }
+            return prev;
           });
           break;
         }
         case "ArrowUp": {
           e.preventDefault();
-          setSelectedItem((prev) => {
-            if (prev === null) return 0;
-            return prev - 1 >= 0 ? prev - 1 : items.length;
+          setActiveIndex((prev) => {
+            if (typeof prev === "number" && prev - 1 >= 0) {
+              return prev - 1;
+            }
+            return prev;
           });
           break;
         }
         case "Enter": {
-          if (items.length === selectedItem) {
-            handleLoad();
-            return;
-          }
-          if (typeof selectedItem !== "number") return;
-          const targettedItem = items[selectedItem];
+          if (typeof activeIndex !== "number") return;
+          const targettedItem = items.data[activeIndex];
           router.push(`/db/item/${targettedItem.id}`);
           setModalOpen(false);
           setSearch("");
         }
       }
     },
-    [selectedItem, items, modalOpen, router]
+    [activeIndex, items, modalOpen, router]
   );
 
   useEffect(() => {
-    setSelectedItem(0);
-  }, [modalOpen]);
+    if (typeof activeIndex === "number" && listItemsRef.current[activeIndex]) {
+      listItemsRef.current[activeIndex].scrollIntoView();
+    }
+  }, [activeIndex]);
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       const [res, error] = await fetchItemsWithAmountMatching({
         page: "1",
         search: debouncedSearch,
       });
       if (error) return;
 
-      const { items: newItems, totalMatchingItems: count } = res;
-
-      if (count === 0) {
-        setIsLoadAvailable(false);
-      } else {
-        setIsLoadAvailable(true);
-      }
+      const { items: newItems, totalMatchingItems } = res;
 
       if (newItems) {
-        setItems(() =>
-          newItems.map((item) => ({
+        setItems(() => ({
+          data: newItems.map((item) => ({
             icon: item.icon,
             name: item.name,
             id: item.itemId,
-          }))
-        );
+          })),
+          allLoaded: totalMatchingItems === newItems.length,
+        }));
       }
 
       pageRef.current = 1;
+      setLoading(false);
     })();
   }, [debouncedSearch]);
 
   return (
     <Popover.Root open={modalOpen}>
       <Popover.Trigger asChild>
-        <div>
+        <div className="relative">
           <SearchBar
             autoComplete="off"
             onKeyDown={handleKeyDown}
@@ -129,25 +146,40 @@ export default function NavSearchBar() {
             value={search}
             onClick={() => setModalOpen((prev) => !prev)}
             onChange={(e) => {
-              setSelectedItem(0);
+              setActiveIndex(0);
               setModalOpen(() => true);
               setSearch(e.target.value);
             }}
           />
+          {displayLoader && (
+            <Loader2
+              size={18}
+              className="animate-spin absolute right-2 top-2"
+            />
+          )}
         </div>
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content
+          style={{ zIndex: 1000 }}
           onInteractOutside={(e: any) => {
             if ("nav-input" !== e.target?.id) setModalOpen(() => false);
           }}
           onOpenAutoFocus={(e) => e.preventDefault()}
-          className="border-y border-border-grey rounded-sm w-60 mt-2 z-50 max-h-72 overflow-auto"
+          className="bg-red"
         >
-          <ul autoFocus className="capitalize">
+          <ul
+            className="border-y border-border-grey rounded-sm w-60 mt-2 max-h-64 overflow-auto capitalize"
+            onScroll={handleScrollEnd}
+          >
             {items &&
-              items.map((item, index) => (
-                <li key={index}>
+              items.data.map((item, index) => (
+                <li
+                  key={index}
+                  ref={(e) => {
+                    listItemsRef.current[index] = e;
+                  }}
+                >
                   <Link
                     onClick={() => {
                       setModalOpen(false);
@@ -158,7 +190,7 @@ export default function NavSearchBar() {
                     <div
                       className={cn(
                         "flex gap-3 items-center p-2 border-y border-y-border-grey bg-backdrop hover:bg-primary",
-                        index === selectedItem && "bg-primary"
+                        index === activeIndex && "bg-primary"
                       )}
                     >
                       <Image
@@ -174,25 +206,6 @@ export default function NavSearchBar() {
                   </Link>
                 </li>
               ))}
-            {isLoadAvailable && (
-              <li>
-                <button
-                  onClick={handleLoad}
-                  className={cn(
-                    `group w-full text-border-grey hover:text-arc-badge flex gap-3 items-center
-                  justify-center p-2 border-y border-y-border-grey bg-backdrop hover:bg-primary
-                  hover:cursor-pointer`,
-                    items.length === selectedItem && "bg-primary"
-                  )}
-                >
-                  <RefreshCw
-                    size={18}
-                    className="group-hover:rotate-90 transition-transform duration-300"
-                  />
-                  <span style={{ textTransform: "none" }}>Load more</span>
-                </button>
-              </li>
-            )}
           </ul>
         </Popover.Content>
       </Popover.Portal>
