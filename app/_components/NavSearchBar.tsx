@@ -3,13 +3,13 @@
 import useDebounce from "@/app/hooks/useDebounce";
 import * as Popover from "@radix-ui/react-popover";
 import Image from "next/image";
-import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import SearchBar from "./ui/SearchBar";
 import { useRouter } from "next/navigation";
 import cn from "../utils/cn";
 import { fetchItemsWithAmountMatching } from "../lib/data/api";
 import { Loader2 } from "lucide-react";
+import ProgressLink from "./ui/ProgressLink";
 
 export default function NavSearchBar() {
   const router = useRouter();
@@ -26,7 +26,8 @@ export default function NavSearchBar() {
   const [loading, setLoading] = useState<boolean>(false);
 
   const displayLoader =
-    (loading && !items.allLoaded && modalOpen) || search !== debouncedSearch;
+    (loading && !items.allLoaded && modalOpen) ||
+    (search !== debouncedSearch && search.length > 0);
 
   const loadItems = useCallback(async () => {
     setLoading(true);
@@ -159,8 +160,8 @@ export default function NavSearchBar() {
                 listItemsRef.current[index] = e;
               }}
             >
-              <Link
-                onClick={() => {
+              <ProgressLink
+                whenClicked={() => {
                   setModalOpen(false);
                   setSearch("");
                 }}
@@ -178,7 +179,7 @@ export default function NavSearchBar() {
                   height={30}
                 />
                 <span className="truncate">{item.name}</span>
-              </Link>
+              </ProgressLink>
             </li>
           ))}
       </ul>

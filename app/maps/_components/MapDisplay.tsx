@@ -3,7 +3,7 @@
 import map from "@/public/blank.png";
 import InteractiveMap from "./InteractiveMap";
 import { Evac, AlertArea, Location } from "@/app/maps/_components/Markers";
-import { MAP_WIDTH } from "@/app/config/config";
+import { MAP_WIDTH } from "@/app/config/constants";
 
 const markers = [
   <Evac x={300} y={150} key={1} />,

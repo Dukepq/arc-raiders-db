@@ -1,4 +1,4 @@
-import { ALLOWED_SORTING_FIELD_NAMES } from "../config/config";
+import { ALLOWED_SORTING_FIELD_NAMES } from "../config/constants";
 
 function sortingParamValid(sortingName: string) {
   const constituents = getSortSearchParamConstituents(sortingName);

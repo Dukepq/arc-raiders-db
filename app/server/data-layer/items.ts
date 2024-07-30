@@ -7,7 +7,7 @@ import {
   LootTypeTable,
   WeaponTable,
 } from "@/drizzle";
-import { MAX_ITEMS_PER_PAGE } from "../../config/config";
+import { MAX_ITEMS_PER_PAGE } from "../../config/constants";
 import { db } from "@/drizzle/db";
 import { desc, eq, sql, and, count, asc, ilike } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";

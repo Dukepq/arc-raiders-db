@@ -1,4 +1,4 @@
-import { SESSION_LIFETIME } from "./config";
+import { SESSION_LIFETIME } from "./constants";
 
 export const getDefaultCookieOptions = () => {
   return {

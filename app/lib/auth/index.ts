@@ -4,7 +4,7 @@ import { cookies, headers } from "next/headers";
 import { cache } from "react";
 import { CookieOptions, Session, TokenData, User } from "@/app/types/auth";
 import DL from "@/app/server/data-layer";
-import { SESSION_LIFETIME } from "@/app/config/config";
+import { SESSION_LIFETIME } from "@/app/config/constants";
 import { invalidateCookies } from "./cookies";
 import logging from "../logging";
 import discord from "./OAuth/discord";

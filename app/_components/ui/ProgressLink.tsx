@@ -5,15 +5,16 @@ import Link, { LinkProps } from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { forwardRef, startTransition } from "react";
 
-type ProgressLinkProps = { children: React.ReactNode; href: string } & Omit<
-  LinkProps,
-  "href"
-> &
+type ProgressLinkProps = {
+  children: React.ReactNode;
+  href: string;
+  whenClicked?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+} & Omit<LinkProps, "href"> &
   React.AllHTMLAttributes<HTMLAnchorElement>;
 
 const ProgressLink = forwardRef<HTMLAnchorElement, ProgressLinkProps>(
   function ProgressLink(
-    { children, href, ...props }: ProgressLinkProps,
+    { children, href, whenClicked, ...props }: ProgressLinkProps,
     forwardedRef
   ) {
     const pathname = usePathname();
@@ -25,6 +26,9 @@ const ProgressLink = forwardRef<HTMLAnchorElement, ProgressLinkProps>(
         href={href}
         onClick={(e) => {
           e.preventDefault();
+          if (whenClicked) {
+            whenClicked(e);
+          }
           if (pathname === href) return;
           progress.start();
 

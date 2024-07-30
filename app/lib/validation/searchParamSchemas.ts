@@ -1,4 +1,4 @@
-import { ALLOWED_SORTING_FIELD_NAMES, rarities } from "@/app/config/config";
+import { ALLOWED_SORTING_FIELD_NAMES, rarities } from "@/app/config/constants";
 import { z } from "zod";
 
 export const searchParamSchema = z.object({
