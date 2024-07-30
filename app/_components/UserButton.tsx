@@ -35,16 +35,17 @@ export default function UserButton({ username }: UserButtonProps) {
         `}
           >
             <DropdownItem>
-              <li className="hover:bg-arc-badge-secondary py-1 px-3 cursor-pointer transition-colors duration-50">
-                <Dialog.Trigger>
+              <li className="hover:bg-arc-badge-secondary cursor-pointer transition-colors duration-50">
+                <Dialog.Trigger className="py-1 px-3">
                   <span>Profile</span>
                   <UserCog size={ICON_SIZE} />
                 </Dialog.Trigger>
               </li>
             </DropdownItem>
             <DropdownItem>
-              <li className="hover:bg-arc-badge-secondary py-1 px-3 cursor-pointer transition-colors duration-50">
+              <li className="hover:bg-arc-badge-secondary cursor-pointer transition-colors duration-50">
                 <button
+                  className="py-1 px-3"
                   onClick={async () => {
                     await logout();
                     location.reload();
