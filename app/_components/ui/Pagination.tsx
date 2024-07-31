@@ -1,4 +1,3 @@
-import { MAX_ITEMS_PER_PAGE } from "@/app/config/constants";
 import cn from "@/app/utils/cn";
 import Link, { LinkProps } from "next/link";
 import {
@@ -12,18 +11,20 @@ import { searchParamSchema } from "@/app/lib/validation/searchParamSchemas";
 type PaginationProps = {
   searchParams?: { [key: string]: string | string[] | undefined };
   totalItems: number;
+  maxItemsPerPage: number;
 };
 
 export default function Pagination({
   searchParams,
   totalItems,
+  maxItemsPerPage,
 }: PaginationProps) {
   const { data } = searchParamSchema.safeParse(searchParams);
   const params = Object.fromEntries(
     Object.entries(data || {}).filter(([key, value]) => !!value && !!key)
   );
 
-  const pagesCount = Math.ceil(totalItems / MAX_ITEMS_PER_PAGE);
+  const pagesCount = Math.ceil(totalItems / maxItemsPerPage);
   if (pagesCount <= 1) {
     return null;
   }
