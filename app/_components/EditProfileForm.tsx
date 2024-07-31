@@ -58,10 +58,20 @@ export default function EditProfileForm({
   return (
     <div className="mt-3">
       <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-        <div className="relative pb-6">
-          <Input {...register("username")} className="w-full" id="new-name" />
+        <div className="relative flex flex-col [&>.labelItem:has(~.inputItem:focus)]:opacity-100">
+          <label
+            htmlFor="new-name"
+            className="opacity-50 labelItem transition-opacity"
+          >
+            Username
+          </label>
+          <Input
+            {...register("username")}
+            className="w-full inputItem"
+            id="new-name"
+          />
           {errors.username && (
-            <span className="block text-accent-red absolute bottom-0 animate-slideUpAndFade">{`${errors.username.message}`}</span>
+            <span className="block text-accent-red animate-slideUpAndFade">{`${errors.username.message}`}</span>
           )}
         </div>
         <Button
@@ -77,7 +87,7 @@ export default function EditProfileForm({
               <LoaderCircle className="animate-spin" />
             </div>
           ) : (
-            "confirm"
+            "Confirm"
           )}
         </Button>
       </form>

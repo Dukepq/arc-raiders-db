@@ -7,7 +7,7 @@ type ContainerProps<T extends React.ElementType> = {
 } & React.ComponentPropsWithoutRef<T> &
   VariantProps<typeof containerOptions>;
 
-const containerOptions = cva("grid place-content-center", {
+const containerOptions = cva("", {
   variants: {
     variant: {
       transparent: "bg-transparent",
@@ -19,7 +19,7 @@ const containerOptions = cva("grid place-content-center", {
       lg: "px-8 lg:px-16 py-10 lg:py-20",
       default: "px-6 lg:px-12 py-7 lg:py-14",
       sm: "px-4 lg:px-6 py-6 lg:py-12",
-      xs: "px-1.5 lg:px-3 py-4 lg:py-8",
+      xs: "px-2 lg:px-4 py-1.5 lg:py-3",
     },
   },
   defaultVariants: {

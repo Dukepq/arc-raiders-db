@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import DL from "./data-layer";
 import { getUser } from "../lib/auth";
 import { profanityFilter } from "../lib/profanityFilter";
+import logging from "../lib/logging";
 
 export const createItemCommentAction = async (
   itemId: string,
@@ -48,6 +49,18 @@ export const deleteCommentAction = async (
     return { success: true, message: "comment deleted.", data: deleted };
   } catch (e) {
     return { success: false, message: "something went wrong." };
+  }
+};
+
+export const deleteUserAction = async (userId: string) => {
+  try {
+    await DL.mutation.users.deleteUser(userId);
+    return { success: true, message: "account deleted." };
+  } catch (e) {
+    if (e instanceof Error) {
+      logging.error(e);
+    }
+    return { success: false, message: "failed to delete account." };
   }
 };
 

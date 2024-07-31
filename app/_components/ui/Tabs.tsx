@@ -15,7 +15,7 @@ export default function TabPanels({ panels }: TabPanelsProps) {
       defaultValue={panels[0].panelName}
       onValueChange={(value) => setCurrentTab(value)}
     >
-      <Tabs.List className="p-3 ">
+      <Tabs.List className="p-3">
         {panels.map((panel) => {
           const { panelName } = panel;
           return (

@@ -117,5 +117,8 @@ export const usersDL = {
         .returning();
       return user;
     },
+    deleteUser: async (userId: string) => {
+      await db.delete(UserTable).where(eq(UserTable.userId, userId));
+    },
   },
 };
