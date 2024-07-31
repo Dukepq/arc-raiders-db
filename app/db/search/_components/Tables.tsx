@@ -9,6 +9,7 @@ import { Item } from "@/app/types/itemTypes";
 import TableSortIndicator from "./TableSortIndicator";
 import { searchParamSchema } from "@/app/lib/validation/searchParamSchemas";
 import ProgressLink from "@/app/_components/ui/ProgressLink";
+import { MAX_ITEMS_PER_PAGE } from "@/app/config/constants";
 
 type GenericItemTableRendererProps = {
   items: (Omit<Item, "variants"> & Partial<Pick<Item, "variants">>)[];
@@ -77,7 +78,11 @@ export function GenericItemTableRenderer({
         </GenericItemTable>
       </div>
       <div className="flex justify-center sticky bottom-3 mt-3">
-        <Pagination totalItems={count} searchParams={searchParams}></Pagination>
+        <Pagination
+          totalItems={count}
+          searchParams={searchParams}
+          maxItemsPerPage={MAX_ITEMS_PER_PAGE}
+        ></Pagination>
       </div>
     </>
   );
