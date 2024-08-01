@@ -45,21 +45,28 @@ export const fetchItemsWithAmountMatching = async (query: QueryParameters) => {
 export const fetchItemComments = async (
   itemId: string,
   params?: { offset?: string; limit?: string }
-): Promise<ItemComment[] | null> => {
+): Promise<{
+  comments: ItemComment[];
+  commentsCount: number;
+} | null> => {
   const url = new URL(`/api/comments/item/${itemId}`, BASE_URL);
   const searchParams = new URLSearchParams(params);
 
   url.search = searchParams.toString();
 
-  const [data] = await fetchWithErrors<
-    (Omit<ItemComment, "createdAt"> & { createdAt: string | Date })[]
-  >(url);
+  const [data] = await fetchWithErrors<{
+    comments: (Omit<ItemComment, "createdAt"> & { createdAt: string | Date })[];
+    commentsCount: number;
+  }>(url);
   if (data) {
-    for (let entry of data) {
+    for (let entry of data.comments) {
       entry.createdAt = new Date(entry.createdAt);
     }
   }
-  return data as ItemComment[] | null;
+  return data as {
+    comments: ItemComment[];
+    commentsCount: number;
+  } | null;
 };
 
 export const fetchWithErrors = async <T>(

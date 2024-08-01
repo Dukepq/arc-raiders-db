@@ -4,7 +4,7 @@ import DL from "./data-layer";
 import { getUser } from "../lib/auth";
 import { profanityFilter } from "../lib/profanityFilter";
 import logging from "../lib/logging";
-import { commentThrottling } from "../config/constants";
+import { commentsConfig } from "../config/constants";
 import { createItemCommentActionSchema } from "../lib/validation/actionSchemas";
 import { z } from "zod";
 
@@ -25,20 +25,20 @@ export const createItemCommentAction = async (
 
     const [recentComments] = await DL.query.users.getUserComments(user.userId, {
       limit: 1,
-      offset: commentThrottling.offset,
+      offset: commentsConfig.offset,
     });
     const commentDate = recentComments?.createdAt as Date | undefined;
     if (commentDate) {
       const elapsedSinceComment = Date.now() - commentDate.getTime();
       const commentingAllowed =
-        commentDate && elapsedSinceComment > commentThrottling.timespan;
+        commentDate && elapsedSinceComment > commentsConfig.timespan;
 
       if (!commentingAllowed) {
         return {
           success: false,
-          message: `You are creating too many comments. Try again in ${Math.ceil(
-            (commentThrottling.timespan - elapsedSinceComment) / 1000 / 60
-          )} minutes`,
+          message: `Please wait ${Math.ceil(
+            (commentsConfig.timespan - elapsedSinceComment) / 1000 / 60
+          )} minutes before commenting again.`,
         };
       }
     }

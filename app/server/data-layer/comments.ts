@@ -2,7 +2,7 @@ import "server-only";
 
 import { db } from "@/drizzle/db";
 import { CommentTable, ItemTable, UserTable } from "@/drizzle";
-import { asc, desc, eq } from "drizzle-orm";
+import { asc, count, desc, eq } from "drizzle-orm";
 import { ItemComment } from "@/app/types/commentTypes";
 
 const itemCommentFields = {
@@ -31,6 +31,19 @@ export const commentsDL = {
         .offset(offset)
         .limit(limit);
       return comments;
+    },
+    getItemCommentsCount: async (
+      itemId: string,
+      offset: number,
+      limit: number
+    ): Promise<number> => {
+      const [data] = await db
+        .select({ count: count() })
+        .from(ItemTable)
+        .where(eq(ItemTable.itemId, itemId))
+        .innerJoin(CommentTable, eq(CommentTable.itemId, ItemTable.itemId));
+
+      return data.count;
     },
     getComment: async (commentId: string) => {
       const [comment] = await db

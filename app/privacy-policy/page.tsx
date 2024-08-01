@@ -20,8 +20,8 @@ export default function Page() {
         <div className="mt-2">
           <p>
             If you want to have your data removed from our database, you can do
-            so by navigating to your profile and pressing the "remove account"
-            button.
+            so by navigating to your profile and pressing the &quot;remove
+            account&quot; button.
           </p>
         </div>
 

@@ -18,12 +18,21 @@ export async function GET(
     const { limit, offset } = itemCommentsSchema.parse(
       Object.fromEntries(searchParams)
     );
-    const comments = await DL.query.comments.getItemComments(
+    const commentsPromise = DL.query.comments.getItemComments(
       itemId,
       offset,
       limit
     );
-    return NextResponse.json(comments, { status: 200 });
+    const commentsCountPromise = DL.query.comments.getItemCommentsCount(
+      itemId,
+      offset,
+      limit
+    );
+    const [comments, commentsCount] = await Promise.all([
+      commentsPromise,
+      commentsCountPromise,
+    ]);
+    return NextResponse.json({ comments, commentsCount }, { status: 200 });
   } catch (e) {
     return NextResponse.json(null, { status: 400 });
   }
