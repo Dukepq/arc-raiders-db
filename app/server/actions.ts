@@ -4,6 +4,7 @@ import DL from "./data-layer";
 import { getUser } from "../lib/auth";
 import { profanityFilter } from "../lib/profanityFilter";
 import logging from "../lib/logging";
+import { commentThrottling } from "../config/constants";
 
 export const createItemCommentAction = async (
   itemId: string,
@@ -15,6 +16,26 @@ export const createItemCommentAction = async (
     return { success: false, message: "not authenticated." };
   }
   try {
+    const [recentComments] = await DL.query.users.getUserComments(user.userId, {
+      limit: 1,
+      offset: commentThrottling.offset,
+    });
+    const commentDate = recentComments?.createdAt as Date | undefined;
+    if (commentDate) {
+      const elapsedSinceComment = Date.now() - commentDate.getTime();
+      const commentingAllowed =
+        commentDate && elapsedSinceComment > commentThrottling.timespan;
+
+      if (!commentingAllowed) {
+        return {
+          success: false,
+          message: `You are creating too many comments. Try again in ${Math.ceil(
+            (commentThrottling.timespan - elapsedSinceComment) / 1000 / 60
+          )} minutes`,
+        };
+      }
+    }
+
     const filteredComment = await profanityFilter.censorProfanity(content);
     await DL.mutation.comments.createItemComment({
       itemId,
@@ -24,6 +45,7 @@ export const createItemCommentAction = async (
     revalidatePath(revalidate);
     return { success: true, message: "comment created!" };
   } catch (e) {
+    console.error(e);
     return { success: false, message: "something went wrong." };
   }
 };

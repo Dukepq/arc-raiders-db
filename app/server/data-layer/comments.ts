@@ -2,7 +2,7 @@ import "server-only";
 
 import { db } from "@/drizzle/db";
 import { CommentTable, ItemTable, UserTable } from "@/drizzle";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { ItemComment } from "@/app/types/commentTypes";
 
 const itemCommentFields = {
@@ -27,7 +27,7 @@ export const commentsDL = {
         .where(eq(ItemTable.itemId, itemId))
         .innerJoin(CommentTable, eq(CommentTable.itemId, ItemTable.itemId))
         .innerJoin(UserTable, eq(UserTable.userId, CommentTable.userId))
-        .orderBy(CommentTable.createdAt)
+        .orderBy(asc(CommentTable.createdAt))
         .offset(offset)
         .limit(limit);
       return comments;

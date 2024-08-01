@@ -42,7 +42,9 @@ export default function CreateComment({
         const result = await createCommentAction(itemId, text, pathname);
         if (result.success) {
           setText("");
-          toast.success(result.message || "ceated!");
+          toast.success(result.message || "created!");
+        } else {
+          toast.error(result.message || "something went wrong.");
         }
         setPending(false);
       }}
@@ -58,14 +60,17 @@ export default function CreateComment({
       <Button
         disabled={pending || text.length < 3}
         className={cn(
-          "py-1 px-2 mt-2 text-base transition-all flex items-center gap-2",
+          "py-1 px-2 mt-2 text-base transition-all flex items-center justify-center gap-2 min-w-32 min-h-8",
           (pending || text.length < 3) && "opacity-20"
         )}
         size={"sm"}
         variant={"default"}
       >
-        <span>comment</span>
-        {pending && <LoaderCircle size={18} className="animate-spin" />}
+        {pending ? (
+          <LoaderCircle size={18} className="animate-spin" />
+        ) : (
+          <span>comment</span>
+        )}
       </Button>
     </form>
   );

@@ -9,9 +9,10 @@ import {
   UserTableSelect,
   UserTableInsert,
   SessionTable,
+  CommentTable,
 } from "@/drizzle";
 import { db } from "@/drizzle/db";
-import { and, eq, or, sql } from "drizzle-orm";
+import { and, desc, eq, or, sql } from "drizzle-orm";
 
 export const usersDL = {
   query: {
@@ -71,6 +72,35 @@ export const usersDL = {
           or(eq(UserTable.email, email), eq(UserTable.username, username))
         );
       return users;
+    },
+    getUserComments: async (
+      userId: string,
+      options?: {
+        offset?: number;
+        limit?: number;
+      }
+    ) => {
+      const query = db
+        .select({
+          userId: CommentTable.userId,
+          content: CommentTable.content,
+          commentId: CommentTable.commentId,
+          createdAt: CommentTable.createdAt,
+        })
+        .from(UserTable)
+        .where(eq(UserTable.userId, userId))
+        .innerJoin(CommentTable, eq(CommentTable.userId, UserTable.userId))
+        .orderBy(desc(CommentTable.createdAt));
+
+      if (options?.limit) {
+        query.limit(options?.limit);
+      }
+      if (options?.offset) {
+        query.offset(options.offset);
+      }
+
+      const comments = await query;
+      return comments;
     },
   },
   mutation: {

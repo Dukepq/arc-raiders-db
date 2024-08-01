@@ -1,4 +1,4 @@
-import { date, pgTable, text, uuid, varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { UserTable } from "./users";
 import { ItemTable } from "./items";
 
@@ -10,7 +10,13 @@ export const CommentTable = pgTable("comments", {
     })
     .notNull(),
   content: text("content").notNull(),
-  createdAt: date("created_at").notNull().defaultNow(),
+  createdAt: timestamp("created_at", {
+    mode: "date",
+    withTimezone: true,
+    precision: 0,
+  })
+    .notNull()
+    .defaultNow(),
   itemId: varchar("item_id", { length: 50 }).references(() => ItemTable.itemId),
 });
 export type CommentTableInsert = typeof CommentTable.$inferInsert;
