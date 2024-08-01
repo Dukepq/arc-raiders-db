@@ -1,27 +1,24 @@
 "use client";
 
-import { useFormStatus } from "react-dom";
-import { Button } from "./ui/Button";
-import TextEditor from "./ui/TextEditor";
+import { Button } from "../../../_components/ui/Button";
+import TextEditor from "../../../_components/ui/TextEditor";
 import { useCallback, useState } from "react";
-import cn from "../utils/cn";
-import { usePathname } from "next/navigation";
+import cn from "../../../utils/cn";
+import { useParams, usePathname } from "next/navigation";
 import { toast } from "sonner";
 import { LoaderCircle } from "lucide-react";
+import { createItemCommentAction } from "../../../server/actions";
+import { useCommentContext } from "@/app/context/commentContext";
 
 type CreateCommentProps = {
-  itemId: string;
-  createCommentAction: (
-    comment: { content: string; itemId: string },
-    revalidate: string
-  ) => Promise<{ success: boolean; message?: string }>;
   textFieldDisabled?: boolean;
 };
 export default function CreateComment({
-  createCommentAction,
-  itemId,
   textFieldDisabled = false,
 }: CreateCommentProps) {
+  const params = useParams();
+  const itemId = params.item as string;
+  const { setComments } = useCommentContext();
   const pathname = usePathname();
   const [text, setText] = useState<string>("");
   const [pending, setPending] = useState<boolean>(false);
@@ -38,15 +35,22 @@ export default function CreateComment({
       onSubmit={async (e) => {
         e.preventDefault();
         setPending(true);
-        const result = await createCommentAction(
+        const result = await createItemCommentAction(
           { itemId, content: text },
           pathname
         );
-        if (result.success) {
+        const { message, success } = result;
+        if (success) {
+          const { comment } = result;
           setText("");
-          toast.success(result.message || "created!");
+          setComments((prev) => {
+            const newComments = [...prev];
+            newComments.unshift(comment);
+            return newComments;
+          });
+          toast.success(message || "created!");
         } else {
-          toast.error(result.message || "something went wrong.");
+          toast.error(message || "something went wrong.");
         }
         setPending(false);
       }}

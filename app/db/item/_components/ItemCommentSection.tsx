@@ -1,54 +1,25 @@
 "use client";
 
-import CreateComment from "@/app/_components/CreateComment";
+import CreateComment from "./CreateComment";
 import { commentsConfig } from "@/app/config/constants";
 import { useSessionContext } from "@/app/context/sessionContext";
 import { fetchItemComments } from "@/app/lib/data/api";
 import { ItemComment } from "@/app/types/commentTypes";
 import { useEffect, useRef, useState } from "react";
-import { createItemCommentAction } from "@/app/server/actions";
-import Comment from "@/app/_components/Comment";
+import Comment from "./Comment";
 import { SignInButton } from "@/app/_components/SignInButton";
 import { Loader2 } from "lucide-react";
+import { useCommentContext } from "@/app/context/commentContext";
 
-export default function ItemCommentSection({ itemId }: { itemId: string }) {
+export default function ItemCommentSection() {
   const { user } = useSessionContext();
-  const [comments, setComments] = useState<ItemComment[]>([]);
-  const [allCommentsLoaded, setAllCommentsLoaded] = useState<boolean>(false);
-  const hasFetched = useRef(false);
-
-  const loadComments = async () => {
-    const data = await fetchItemComments(itemId, {
-      offset: comments.length.toString(),
-      limit: commentsConfig.loadAmount.toString(),
-    });
-    if (!data) return;
-    const { comments: newComments, commentsCount } = data;
-    setAllCommentsLoaded(
-      comments.length + newComments.length === commentsCount
-    );
-    setComments((prev) => prev.concat(newComments));
-  };
-
-  useEffect(() => {
-    if (!hasFetched.current) {
-      hasFetched.current = true;
-      (async () => {
-        await loadComments();
-      })();
-    }
-  }, []);
+  const { comments, allCommentsLoaded } = useCommentContext();
 
   return (
     <div className="mx-3">
       {!!user && (
         <>
-          <CreateComment
-            textFieldDisabled={!user}
-            itemId={itemId}
-            createCommentAction={createItemCommentAction}
-          />
-
+          <CreateComment />
           <hr className="my-6 opacity-10 text-text" />
         </>
       )}
@@ -86,25 +57,16 @@ export default function ItemCommentSection({ itemId }: { itemId: string }) {
           </div>
         )}
       </div>
-      <LoadCommentsButton
-        allCommentsLoaded={allCommentsLoaded}
-        loadComments={loadComments}
-      />
+      <LoadCommentsButton />
     </div>
   );
 }
 
-type LoadCommentsButtonProps = {
-  loadComments: () => Promise<void>;
-  allCommentsLoaded: boolean;
-};
-function LoadCommentsButton({
-  loadComments,
-  allCommentsLoaded,
-}: LoadCommentsButtonProps) {
-  const [loadingComments, setLoadingComments] = useState<boolean>(false);
+function LoadCommentsButton() {
+  const { allCommentsLoaded, loading, loadComments, comments } =
+    useCommentContext();
 
-  if (allCommentsLoaded) {
+  if (allCommentsLoaded || comments.length === 0) {
     return null;
   }
   return (
@@ -112,13 +74,11 @@ function LoadCommentsButton({
       <button
         className="relative"
         onClick={async () => {
-          setLoadingComments(true);
           await loadComments();
-          setLoadingComments(false);
         }}
       >
         <span>load more comments</span>
-        {loadingComments && (
+        {loading && (
           <div className="absolute top-1/2 -translate-y-1.5 -right-5">
             <Loader2 size={15} className="animate-spin" />
           </div>

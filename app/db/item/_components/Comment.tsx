@@ -1,11 +1,12 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { deleteCommentAction } from "../server/actions";
-import { Button } from "./ui/Button";
-import { startTransition, useTransition } from "react";
+import { deleteCommentAction } from "../../../server/actions";
+import { Button } from "../../../_components/ui/Button";
+import { useTransition } from "react";
 import { toast } from "sonner";
 import { LoaderCircle } from "lucide-react";
+import { useCommentContext } from "@/app/context/commentContext";
 
 type CommentProps = {
   username: string;
@@ -49,6 +50,7 @@ type DeleteCommentButtonProps = {
 function DeleteCommentButton({ commentId }: DeleteCommentButtonProps) {
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
+  const { setComments } = useCommentContext();
 
   return (
     <Button
@@ -57,6 +59,9 @@ function DeleteCommentButton({ commentId }: DeleteCommentButtonProps) {
         startTransition(async () => {
           const result = await deleteCommentAction(commentId, pathname);
           if (result.success) {
+            setComments((prev) =>
+              prev.filter((entry) => entry.commentId !== result.data?.commentId)
+            );
             toast.success(result.message || "deleted.");
           } else {
             toast.error(result.message || "something went wrong.");

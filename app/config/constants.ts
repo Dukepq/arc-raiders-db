@@ -7,6 +7,6 @@ export const MAP_WIDTH = 1600;
 export const SESSION_LIFETIME = 1000 * 60 * 60 * 24 * 30;
 export const commentsConfig = {
   offset: 0,
-  timespan: 1000 * 60 * 5,
+  timespan: 1000 * 60 * 0,
   loadAmount: 6,
 };

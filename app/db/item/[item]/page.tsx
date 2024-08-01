@@ -3,6 +3,7 @@ import BackButton from "../_components/BackButton";
 import Favourite from "@/app/_components/ui/Favourite";
 import RelatedContent from "../_components/RelatedContent";
 import DL from "@/app/server/data-layer";
+import { CommentContextProvider } from "@/app/context/commentContext";
 
 export default async function Page({ params }: { params: { item: string } }) {
   return (
@@ -18,7 +19,9 @@ export default async function Page({ params }: { params: { item: string } }) {
         </div>
 
         <div className="my-3">
-          <RelatedContent id={params.item} />
+          <CommentContextProvider>
+            <RelatedContent />
+          </CommentContextProvider>
         </div>
       </main>
     </div>

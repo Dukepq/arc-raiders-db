@@ -7,14 +7,22 @@ import logging from "../lib/logging";
 import { commentsConfig } from "../config/constants";
 import { createItemCommentActionSchema } from "../lib/validation/actionSchemas";
 import { z } from "zod";
+import { ItemComment } from "../types/commentTypes";
 
+type createItemCommentActionReturn =
+  | { success: false; message: string }
+  | {
+      success: true;
+      message: string;
+      comment: ItemComment;
+    };
 export const createItemCommentAction = async (
   comment: {
     itemId: unknown;
     content: unknown;
   },
   revalidate: unknown
-) => {
+): Promise<createItemCommentActionReturn> => {
   const user = await getUser();
   if (!user) {
     return { success: false, message: "not authenticated." };
@@ -44,13 +52,21 @@ export const createItemCommentAction = async (
     }
 
     const filteredComment = await profanityFilter.censorProfanity(content);
-    await DL.mutation.comments.createItemComment({
+    const addedComment = await DL.mutation.comments.createItemComment({
       itemId,
       userId: user.userId,
       content: filteredComment,
     });
     revalidatePath(parsedRevalidatePathname);
-    return { success: true, message: "comment created!" };
+    return {
+      success: true,
+      message: "comment created!",
+      comment: {
+        ...addedComment,
+        parentId: addedComment.itemId || "",
+        username: user.username,
+      },
+    };
   } catch (e) {
     console.error(e);
     return { success: false, message: "something went wrong." };
