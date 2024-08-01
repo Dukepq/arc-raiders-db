@@ -5,17 +5,24 @@ import { getUser } from "../lib/auth";
 import { profanityFilter } from "../lib/profanityFilter";
 import logging from "../lib/logging";
 import { commentThrottling } from "../config/constants";
+import { createItemCommentActionSchema } from "../lib/validation/actionSchemas";
+import { z } from "zod";
 
 export const createItemCommentAction = async (
-  itemId: string,
-  content: string,
-  revalidate: string
+  comment: {
+    itemId: unknown;
+    content: unknown;
+  },
+  revalidate: unknown
 ) => {
   const user = await getUser();
   if (!user) {
     return { success: false, message: "not authenticated." };
   }
   try {
+    const { content, itemId } = createItemCommentActionSchema.parse(comment);
+    const parsedRevalidatePathname = z.string().parse(revalidate);
+
     const [recentComments] = await DL.query.users.getUserComments(user.userId, {
       limit: 1,
       offset: commentThrottling.offset,
@@ -42,7 +49,7 @@ export const createItemCommentAction = async (
       userId: user.userId,
       content: filteredComment,
     });
-    revalidatePath(revalidate);
+    revalidatePath(parsedRevalidatePathname);
     return { success: true, message: "comment created!" };
   } catch (e) {
     console.error(e);
@@ -51,22 +58,25 @@ export const createItemCommentAction = async (
 };
 
 export const deleteCommentAction = async (
-  id: string,
-  revalidatePathname: string
+  id: unknown,
+  revalidatePathname: unknown
 ) => {
   try {
+    const parsedId = z.string().parse(id);
+    const parsedRevalidatePathname = z.string().parse(revalidatePathname);
+
     const user = await getUser();
     if (!user) {
       return { success: false, message: "not authenticated." };
     }
 
-    const comment = await DL.query.comments.getComment(id);
+    const comment = await DL.query.comments.getComment(parsedId);
     if (comment.userId !== user.userId) {
       return { success: false, message: "not authenticated." };
     }
 
-    const deleted = await DL.mutation.comments.deleteComment(id);
-    revalidatePath(revalidatePathname);
+    const deleted = await DL.mutation.comments.deleteComment(parsedId);
+    revalidatePath(parsedRevalidatePathname);
 
     return { success: true, message: "comment deleted.", data: deleted };
   } catch (e) {
@@ -74,9 +84,10 @@ export const deleteCommentAction = async (
   }
 };
 
-export const deleteUserAction = async (userId: string) => {
+export const deleteUserAction = async (userId: unknown) => {
   try {
-    await DL.mutation.users.deleteUser(userId);
+    const parsedUserId = z.string().parse(userId);
+    await DL.mutation.users.deleteUser(parsedUserId);
     return { success: true, message: "account deleted." };
   } catch (e) {
     if (e instanceof Error) {
@@ -87,14 +98,15 @@ export const deleteUserAction = async (userId: string) => {
 };
 
 export const changeUsernameAction = async (
-  newName: string
+  newName: unknown
 ): Promise<{ success: boolean; message: string }> => {
   const user = await getUser();
   if (!user) {
     return { success: false, message: "not authenticated." };
   }
   try {
-    await DL.mutation.users.updateUsername(user.userId, newName);
+    const parsedNewName = z.string().parse(newName);
+    await DL.mutation.users.updateUsername(user.userId, parsedNewName);
     return { success: true, message: "username updated!" };
   } catch {
     return { success: false, message: "username already taken." };

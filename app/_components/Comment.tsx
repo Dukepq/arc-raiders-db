@@ -9,7 +9,7 @@ import { LoaderCircle } from "lucide-react";
 
 type CommentProps = {
   username: string;
-  createdAt: Date;
+  createdAt: Date | string;
   content: string;
   commentId: string;
   deleteAble: boolean;
@@ -22,6 +22,7 @@ export default function Comment({
   commentId,
   deleteAble,
 }: CommentProps) {
+  const createdAtDate = new Date(createdAt);
   return (
     <div className="flex justify-between mb-5 bg-backdrop-darker p-2 rounded-sm">
       <div>
@@ -30,7 +31,7 @@ export default function Comment({
           <div className="flex flex-col">
             <span className="text-base font-bold">{username}</span>
             <span className="text-sm font-light opacity-50">
-              {createdAt.toUTCString()}
+              {createdAtDate.toUTCString()}
             </span>
           </div>
         </div>

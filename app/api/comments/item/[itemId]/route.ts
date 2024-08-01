@@ -9,7 +9,6 @@ export async function GET(
 ) {
   const itemId = params?.itemId;
   if (!itemId) {
-    console.log("NO ID");
     return NextResponse.json(null, { status: 400 });
   }
 

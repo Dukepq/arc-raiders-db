@@ -137,7 +137,7 @@ function DangerZone() {
   };
 
   return (
-    <div className="mt-6">
+    <div className="my-2">
       <button
         onClick={() => setExpanded((prev) => !prev)}
         className="flex items-center gap-1"

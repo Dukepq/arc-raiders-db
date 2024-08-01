@@ -12,8 +12,7 @@ import { LoaderCircle } from "lucide-react";
 type CreateCommentProps = {
   itemId: string;
   createCommentAction: (
-    content: string,
-    itemId: string,
+    comment: { content: string; itemId: string },
     revalidate: string
   ) => Promise<{ success: boolean; message?: string }>;
   textFieldDisabled?: boolean;
@@ -39,7 +38,10 @@ export default function CreateComment({
       onSubmit={async (e) => {
         e.preventDefault();
         setPending(true);
-        const result = await createCommentAction(itemId, text, pathname);
+        const result = await createCommentAction(
+          { itemId, content: text },
+          pathname
+        );
         if (result.success) {
           setText("");
           toast.success(result.message || "created!");
