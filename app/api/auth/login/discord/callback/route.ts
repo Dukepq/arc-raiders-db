@@ -65,8 +65,6 @@ export async function GET(request: Request) {
     });
 
     const redirectOrigin = cookies().get("redirect_origin")?.value;
-    console.log("REREZRDSSDF");
-    console.log(redirectOrigin);
 
     return NextResponse.redirect(redirectOrigin || BASE_URL);
   } catch (e) {
