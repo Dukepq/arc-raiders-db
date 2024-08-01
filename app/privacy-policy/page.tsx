@@ -18,11 +18,11 @@ export default function Page() {
           </p>
         </div>
         <div className="mt-2">
-          {/* <p>
+          <p>
             If you want to have your data removed from our database, you can do
-            so by navigating to your profile and pressing the "delete data"
+            so by navigating to your profile and pressing the "remove account"
             button.
-          </p> */}
+          </p>
         </div>
 
         <h2 className="text-2xl font-medium mb-2 mt-4">Use of Cookies</h2>
