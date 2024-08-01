@@ -4,7 +4,7 @@ import {
   generateCodeVerifier,
   generateRandomHex,
 } from "@/app/lib/auth/OAuth/helpers";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { NextResponse } from "next/server";
 
 const CLIENT_ID = process.env.DISCORD_CLIENT_ID;
@@ -47,6 +47,17 @@ export async function GET() {
     path: "/",
     sameSite: "lax",
   });
+
+  const referer = headers().get("Referer");
+  if (referer)
+    cookies().set("redirect_origin", referer, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 60 * 10,
+      path: "/",
+      sameSite: "lax",
+    });
+
   return NextResponse.redirect(authorizationURL, {
     headers: {
       Authorization: `Basic ${encodedCredentials}`,

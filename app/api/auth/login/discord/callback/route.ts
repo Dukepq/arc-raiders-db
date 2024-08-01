@@ -64,7 +64,11 @@ export async function GET(request: Request) {
       ...auth.cookieOptions,
     });
 
-    return NextResponse.redirect(BASE_URL);
+    const redirectOrigin = cookies().get("redirect_origin")?.value;
+    console.log("REREZRDSSDF");
+    console.log(redirectOrigin);
+
+    return NextResponse.redirect(redirectOrigin || BASE_URL);
   } catch (e) {
     if (e instanceof Error) {
       logging.error(e);
