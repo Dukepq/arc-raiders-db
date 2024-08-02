@@ -7,6 +7,7 @@ import { useTransition } from "react";
 import { toast } from "sonner";
 import { LoaderCircle } from "lucide-react";
 import { useCommentContext } from "@/app/context/commentContext";
+import { getRelativeTime } from "@/app/utils/utils";
 
 type CommentProps = {
   username: string;
@@ -24,6 +25,7 @@ export default function Comment({
   deleteAble,
 }: CommentProps) {
   const createdAtDate = new Date(createdAt);
+  const relativeDate = getRelativeTime(createdAtDate);
   return (
     <div className="flex justify-between mb-5 bg-backdrop-darker p-2 rounded-sm">
       <div>
@@ -32,7 +34,7 @@ export default function Comment({
           <div className="flex flex-col">
             <span className="text-base font-bold">{username}</span>
             <span className="text-sm font-light opacity-50">
-              {createdAtDate.toUTCString()}
+              {relativeDate}
             </span>
           </div>
         </div>
