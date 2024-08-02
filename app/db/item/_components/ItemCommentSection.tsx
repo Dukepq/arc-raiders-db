@@ -44,7 +44,7 @@ export default function ItemCommentSection() {
           </div>
         )}
         {!user && (
-          <div className="mt-3">
+          <div className="pb-6">
             <span className="font-light">
               You need to be logged in to comment.
             </span>

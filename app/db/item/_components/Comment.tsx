@@ -31,7 +31,7 @@ export default function Comment({
   const createdAtDate = new Date(createdAt);
   const relativeDate = getRelativeTime(createdAtDate);
   return (
-    <div className="flex justify-between mb-5 bg-backdrop-darker p-2 rounded-sm">
+    <div className="flex justify-between mb-3 bg-backdrop-darker p-2 rounded-sm border border-border-grey">
       <div>
         <div className="flex mb-1">
           <div
