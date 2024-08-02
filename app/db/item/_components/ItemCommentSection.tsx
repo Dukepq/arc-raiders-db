@@ -1,11 +1,7 @@
 "use client";
 
 import CreateComment from "./CreateComment";
-import { commentsConfig } from "@/app/config/constants";
 import { useSessionContext } from "@/app/context/sessionContext";
-import { fetchItemComments } from "@/app/lib/data/api";
-import { ItemComment } from "@/app/types/commentTypes";
-import { useEffect, useRef, useState } from "react";
 import Comment from "./Comment";
 import { SignInButton } from "@/app/_components/SignInButton";
 import { Loader2 } from "lucide-react";
@@ -13,7 +9,7 @@ import { useCommentContext } from "@/app/context/commentContext";
 
 export default function ItemCommentSection() {
   const { user } = useSessionContext();
-  const { comments, allCommentsLoaded } = useCommentContext();
+  const { comments } = useCommentContext();
 
   return (
     <div className="mx-3">

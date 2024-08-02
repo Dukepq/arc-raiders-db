@@ -3,16 +3,22 @@ import "server-only";
 import {
   UserKeyTable,
   UserKeyTableInsert,
-  UserKeyTableSelect,
   ProviderEnumType,
   UserTable,
-  UserTableSelect,
   UserTableInsert,
-  SessionTable,
   CommentTable,
 } from "@/drizzle";
 import { db } from "@/drizzle/db";
 import { and, desc, eq, or, sql } from "drizzle-orm";
+
+const selectUserFields = {
+  userId: UserTable.userId,
+  email: UserTable.email,
+  username: UserTable.username,
+  createdAt: UserTable.createdAt,
+  banned: UserTable.banned,
+  role: UserTable.role,
+};
 
 export const usersDL = {
   query: {
@@ -21,13 +27,7 @@ export const usersDL = {
       providerId: string
     ) => {
       const [user] = await db
-        .select({
-          userId: UserTable.userId,
-          email: UserTable.email,
-          username: UserTable.username,
-          createdAt: UserTable.createdAt,
-          banned: UserTable.banned,
-        })
+        .select(selectUserFields)
         .from(UserTable)
         .innerJoin(UserKeyTable, eq(UserKeyTable.userId, UserTable.userId))
         .where(
@@ -40,26 +40,14 @@ export const usersDL = {
     },
     getUserByName: async (username: string) => {
       const [foundUser] = await db
-        .select({
-          userId: UserTable.userId,
-          email: UserTable.email,
-          username: UserTable.username,
-          createdAt: UserTable.createdAt,
-          banned: UserTable.banned,
-        })
+        .select(selectUserFields)
         .from(UserTable)
         .where(eq(UserTable.username, username));
       return foundUser;
     },
     getUserByEmail: async (email: string) => {
       const [foundUser] = await db
-        .select({
-          userId: UserTable.userId,
-          email: UserTable.email,
-          username: UserTable.username,
-          createdAt: UserTable.createdAt,
-          banned: UserTable.banned,
-        })
+        .select(selectUserFields)
         .from(UserTable)
         .where(eq(UserTable.email, email));
       return foundUser;
