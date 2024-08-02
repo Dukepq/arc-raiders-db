@@ -34,7 +34,7 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <hr className="my-6 opacity-80" />
+        <div className="my-6 opacity-80 h-[1px] w-full bg-[linear-gradient(90deg,rgba(255,255,255,0)0%,rgba(255,255,255,0.9)35%,rgba(255,255,255,0.9)50%,rgba(255,255,255,0.9)65%,rgba(255,255,255,0)100%)]" />
 
         <div className="text-text/80 [&>*]:transition-colors text-sm flex sm:gap-6 gap-3 justify-center items-center flex-col sm:flex-row">
           <div className="flex items-center gap-3">
