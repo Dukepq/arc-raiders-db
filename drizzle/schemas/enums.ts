@@ -42,3 +42,6 @@ export const ProviderEnum = pgEnum("provider_enum", [
   "email",
 ]);
 export type ProviderEnumType = (typeof ProviderEnum)["enumValues"][number];
+
+export const RoleEnum = pgEnum("role_enum", ["ADMIN", "RAIDER"]);
+export type RoleEnumType = (typeof RoleEnum)["enumValues"][number];

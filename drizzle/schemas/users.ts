@@ -7,13 +7,14 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { ProviderEnum } from "./enums";
+import { ProviderEnum, RoleEnum } from "./enums";
 import { TokenData } from "@/app/types/auth";
 
 export const UserTable = pgTable("users", {
   userId: uuid("user_id").defaultRandom().primaryKey().unique(),
   email: varchar("email").unique().notNull(),
   username: varchar("username").notNull().unique(),
+  role: RoleEnum("role").default("RAIDER").notNull(),
   createdAt: timestamp("created_at", {
     withTimezone: true,
     mode: "date",
