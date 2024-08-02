@@ -56,7 +56,7 @@ border border-border-grey text-nowrap
           href={`${BASE_URL}/api/auth/login/discord`}
           icon={<Discord className="fill-text size-6" />}
         />
-        <OAuthSignInButton
+        {/* <OAuthSignInButton
           description="Sign in with Twitch."
           href={`${BASE_URL}/api/auth/login/twitch`}
           icon={<Twitch className="fill-text size-6" />}
@@ -65,7 +65,7 @@ border border-border-grey text-nowrap
           description="Sign in with Google."
           href={`${BASE_URL}/api/auth/login/google`}
           icon={<Google className="fill-text size-6" />}
-        />
+        /> */}
       </div>
     </DialogWrap>
   );

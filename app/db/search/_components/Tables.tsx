@@ -77,7 +77,7 @@ export function GenericItemTableRenderer({
           )}
         </GenericItemTable>
       </div>
-      <div className="flex justify-center sticky bottom-3 mt-3">
+      <div className="flex justify-center sticky bottom-3 my-3">
         <Pagination
           totalItems={count}
           searchParams={searchParams}

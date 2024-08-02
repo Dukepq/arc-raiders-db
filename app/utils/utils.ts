@@ -29,5 +29,5 @@ export const getRelativeTime = (fromDate: Date): string => {
     }
   }
 
-  return "just now";
+  return "now";
 };
