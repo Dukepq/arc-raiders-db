@@ -11,7 +11,7 @@ import {
   Backpack,
   Weight,
 } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 function resourceMatches(locationPath: string, currentPath: string): boolean {
   const pathSegments = currentPath.split("/");
@@ -127,9 +127,12 @@ export function NavLinkItem({
 }: { children: React.ReactNode } & LinkProps &
   React.HTMLAttributes<HTMLAnchorElement>) {
   const pathname = usePathname();
+  const router = useRouter();
   return (
     <li className="h-full">
       <Link
+        onMouseEnter={() => router.prefetch(props.href.toString())}
+        prefetch={false}
         draggable="false"
         className={cn(
           "flex items-center gap-1 hover:bg-arc-rarity-uncommon hover:bg-opacity-10 px-3 py-1 rounded-sm",

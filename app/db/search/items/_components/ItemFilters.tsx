@@ -2,7 +2,7 @@
 
 import { ChevronDown } from "lucide-react";
 import DropdownWrap, { DropdownItem } from "@/app/_components/ui/DropdownWrap";
-import Link from "next/link";
+import Link, { LinkProps } from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import cn from "@/app/utils/cn";
 import { Suspense } from "react";
@@ -65,19 +65,19 @@ export function TypeFilter() {
         {!!typeFilter && (
           <li>
             <DropdownItem>
-              <Link
+              <ItemFilterLink
                 replace={true}
                 href={`?${newParams.delete("type").getParams()}`}
               >
                 <span className="text-accent-red">Remove filter</span>
-              </Link>
+              </ItemFilterLink>
             </DropdownItem>
           </li>
         )}
         {typeDropdownItems.map(({ name }) => (
           <li key={name}>
             <DropdownItem>
-              <Link
+              <ItemFilterLink
                 replace={true}
                 href={`?${newParams.set("type", name).getParams()}`}
               >
@@ -89,7 +89,7 @@ export function TypeFilter() {
                   )}
                 ></span>
                 <span>{name}</span>
-              </Link>
+              </ItemFilterLink>
             </DropdownItem>
           </li>
         ))}
@@ -142,19 +142,19 @@ export function RarityFilter() {
         {!!rarityFilter && (
           <li>
             <DropdownItem>
-              <Link
+              <ItemFilterLink
                 replace={true}
                 href={`?${newParams.delete("rarity").getParams()}`}
               >
                 <span className="text-accent-red">Remove filter</span>
-              </Link>
+              </ItemFilterLink>
             </DropdownItem>
           </li>
         )}
         {rarityDropdownItems.map(({ name, colorHex }) => (
           <li key={name}>
             <DropdownItem>
-              <Link
+              <ItemFilterLink
                 replace={true}
                 href={`?${newParams.set("rarity", name).getParams()}`}
               >
@@ -167,7 +167,7 @@ export function RarityFilter() {
                   )}
                 ></span>
                 <span>{name}</span>
-              </Link>
+              </ItemFilterLink>
             </DropdownItem>
           </li>
         ))}
@@ -205,27 +205,31 @@ export function BookmarkedFilter() {
         {!!bookmarkedFilter && (
           <li>
             <DropdownItem>
-              <Link
+              <ItemFilterLink
                 className="text-accent-red"
                 href={`?${newParams.delete("bookmarked").getParams()}`}
               >
                 Remove filter
-              </Link>
+              </ItemFilterLink>
             </DropdownItem>
           </li>
         )}
         <li>
           <DropdownItem>
-            <Link href={`?${newParams.set("bookmarked", "true").getParams()}`}>
+            <ItemFilterLink
+              href={`?${newParams.set("bookmarked", "true").getParams()}`}
+            >
               Yes
-            </Link>
+            </ItemFilterLink>
           </DropdownItem>
         </li>
         <li>
           <DropdownItem>
-            <Link href={`?${newParams.set("bookmarked", "false").getParams()}`}>
+            <ItemFilterLink
+              href={`?${newParams.set("bookmarked", "false").getParams()}`}
+            >
               No
-            </Link>
+            </ItemFilterLink>
           </DropdownItem>
         </li>
       </ul>
@@ -236,5 +240,21 @@ export function BookmarkedFilter() {
 export function ItemFilterButtonSkeleton() {
   return (
     <div className="flex items-center gap-1 bg-backdrop px-3 py-1.5 animate-pulse"></div>
+  );
+}
+function ItemFilterLink({
+  children,
+  ...props
+}: LinkProps &
+  React.AllHTMLAttributes<HTMLAnchorElement> & { children: React.ReactNode }) {
+  const router = useRouter();
+  return (
+    <Link
+      prefetch={false}
+      onMouseEnter={() => router.prefetch(props.href)}
+      {...props}
+    >
+      {children}
+    </Link>
   );
 }

@@ -1,10 +1,11 @@
 "use client";
 
-import { MouseEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { throttle } from "../../utils/throttle";
 import cn from "@/app/utils/cn";
-import { Locate } from "lucide-react";
 import Image, { StaticImageData } from "next/image";
+
+const SCALE_SMOOTHING = 12;
 
 type InteractiveMapProps = {
   map: StaticImageData;
@@ -60,7 +61,7 @@ export default function InteractiveMap({
     (e: React.WheelEvent<HTMLDivElement>) => {
       if (!mouseOver) return;
 
-      const smoothingFactor = 12;
+      const smoothingFactor = SCALE_SMOOTHING;
       const mouseXRelativeToScreenCenter = window.innerWidth / 2 - e.clientX;
       const mouseYRelativeToScreenCenter = window.innerHeight / 2 - e.clientY;
 
