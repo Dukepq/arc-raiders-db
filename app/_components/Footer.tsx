@@ -12,6 +12,7 @@ export default function Footer() {
             <ul>
               <li>
                 <ProgressLink
+                  prefetch={false}
                   className="hover:text-text/100"
                   href="/db/search/items"
                 >
@@ -25,6 +26,7 @@ export default function Footer() {
             <ul>
               <li>
                 <ProgressLink
+                  prefetch={false}
                   className="hover:text-text/100"
                   href="/news/notes"
                 >
@@ -45,12 +47,14 @@ export default function Footer() {
           </div>
 
           <ProgressLink
+            prefetch={false}
             className="hover:text-text/100 underline"
             href={"/privacy-policy"}
           >
             Privacy policy
           </ProgressLink>
           <ProgressLink
+            prefetch={false}
             className="hover:text-text/100 underline"
             href={"/terms-and-conditions"}
           >
