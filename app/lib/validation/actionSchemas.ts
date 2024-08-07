@@ -1,3 +1,4 @@
+import { commentConfig } from "@/app/config/constants";
 import { z } from "zod";
 
 export const deleteCommentActionSchema = z.object({
@@ -7,5 +8,8 @@ export const deleteCommentActionSchema = z.object({
 
 export const createItemCommentActionSchema = z.object({
   itemId: z.string(),
-  content: z.string(),
+  content: z
+    .string()
+    .max(commentConfig.content.maxLength)
+    .min(commentConfig.content.minLength),
 });

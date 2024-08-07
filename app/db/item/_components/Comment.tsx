@@ -9,7 +9,7 @@ import { LoaderCircle } from "lucide-react";
 import { useCommentContext } from "@/app/context/commentContext";
 import { getRelativeTime } from "@/app/utils/utils";
 import { User } from "@/app/types/auth";
-import cn from "@/app/utils/cn";
+import Avatar from "@/app/_components/ui/Avatar";
 
 type CommentProps = {
   username: User["username"];
@@ -26,7 +26,7 @@ export default function Comment({
   createdAt,
   commentId,
   deleteAble,
-  userRole = "RAIDER",
+  userRole,
 }: CommentProps) {
   const createdAtDate = new Date(createdAt);
   const relativeDate = getRelativeTime(createdAtDate);
@@ -34,12 +34,7 @@ export default function Comment({
     <div className="flex justify-between mb-3 bg-backdrop-darker p-2 rounded-sm border border-border-grey">
       <div>
         <div className="flex mb-1">
-          <div
-            className={cn(
-              "size-12 bg-secondary mr-3 rounded-sm",
-              userRole === "ADMIN" && "border border-arc-rarity-scarce"
-            )}
-          ></div>
+          <Avatar username={username} role={userRole} />
           <div className="flex flex-col">
             <span className="text-base font-bold">{username}</span>
             <span className="text-sm font-light opacity-50">

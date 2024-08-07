@@ -11,9 +11,8 @@ import {
 } from "react";
 import { ItemComment } from "../types/commentTypes";
 import { fetchItemComments } from "../lib/data/api";
-import { commentsConfig } from "../config/constants";
-import { useParams, usePathname } from "next/navigation";
-import { createItemCommentAction } from "../server/actions";
+import { commentConfig } from "../config/constants";
+import { useParams } from "next/navigation";
 
 type CommentContextType = {
   comments: ItemComment[];
@@ -43,7 +42,7 @@ export function CommentContextProvider({
     setLoading(true);
     const data = await fetchItemComments(itemId, {
       offset: comments.length.toString(),
-      limit: commentsConfig.loadAmount.toString(),
+      limit: commentConfig.loading.loadAmount.toString(),
     });
     if (!data) return;
     const { comments: newComments, commentsCount } = data;

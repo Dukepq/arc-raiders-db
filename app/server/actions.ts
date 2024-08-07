@@ -4,7 +4,7 @@ import DL from "./data-layer";
 import { getUser } from "../lib/auth";
 import { profanityFilter } from "../lib/profanityFilter";
 import logging from "../lib/logging";
-import { commentsConfig } from "../config/constants";
+import { commentConfig } from "../config/constants";
 import { createItemCommentActionSchema } from "../lib/validation/actionSchemas";
 import { z } from "zod";
 import { ItemComment } from "../types/commentTypes";
@@ -33,19 +33,19 @@ export const createItemCommentAction = async (
 
     const [recentComments] = await DL.query.users.getUserComments(user.userId, {
       limit: 1,
-      offset: commentsConfig.offset,
+      offset: commentConfig.cooldown.offset,
     });
     const commentDate = recentComments?.createdAt as Date | undefined;
     if (commentDate) {
       const elapsedSinceComment = Date.now() - commentDate.getTime();
       const commentingAllowed =
-        commentDate && elapsedSinceComment > commentsConfig.timespan;
+        commentDate && elapsedSinceComment > commentConfig.cooldown.timespan;
 
       if (!commentingAllowed) {
         return {
           success: false,
           message: `Please wait ${Math.ceil(
-            (commentsConfig.timespan - elapsedSinceComment) / 1000 / 60
+            (commentConfig.cooldown.timespan - elapsedSinceComment) / 1000 / 60
           )} minutes before commenting again.`,
         };
       }
