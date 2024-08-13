@@ -103,6 +103,16 @@ export const deleteCommentAction = async (
 export const deleteUserAction = async (userId: unknown) => {
   try {
     const parsedUserId = z.string().parse(userId);
+
+    const user = await getUser();
+    if (!user) {
+      return { success: false, message: "not authenticated." };
+    }
+
+    if (user.userId !== parsedUserId) {
+      return { success: false, message: "not authorized." };
+    }
+
     await DL.mutation.users.deleteUser(parsedUserId);
     return { success: true, message: "account deleted." };
   } catch (e) {
