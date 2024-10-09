@@ -1,7 +1,6 @@
 import "server-only";
 
 import {
-  CategoryTable,
   ItemTable,
   ItemVariantsTable,
   LootTypeTable,
@@ -25,7 +24,6 @@ const referencedItems = alias(ItemTable, "referenced_items");
 
 const baseFields = {
   itemId: ItemTable.itemId,
-  type: ItemTable.type,
   name: ItemTable.name,
   rarity: ItemTable.rarity,
   icon: ItemTable.icon,
@@ -35,11 +33,11 @@ const baseFields = {
   equipableSlots: ItemTable.equipableSlots,
   description: ItemTable.description,
   baseValue: ItemTable.baseValue,
+  category: ItemTable.category,
 };
 
 const itemFields = {
   ...baseFields,
-  category: CategoryTable.category,
   lootType: LootTypeTable.lootType,
 };
 
@@ -60,7 +58,6 @@ const getItems = async (query?: QueryParameters): Promise<Item[]> => {
     })
     .from(ItemTable)
     .where(and(...whereConditions))
-    .leftJoin(CategoryTable, eq(ItemTable.categoryId, CategoryTable.categoryId))
     .leftJoin(LootTypeTable, eq(ItemTable.lootTypeId, LootTypeTable.lootTypeId))
     .leftJoin(
       ItemVariantsTable,
@@ -71,7 +68,7 @@ const getItems = async (query?: QueryParameters): Promise<Item[]> => {
       eq(referencedItems.itemId, ItemVariantsTable.itemId)
     )
     .orderBy(...sortConditions, asc(ItemTable.name))
-    .groupBy(ItemTable.itemId, CategoryTable.category, LootTypeTable.lootType)
+    .groupBy(ItemTable.itemId, LootTypeTable.lootType)
     .offset(from)
     .limit(MAX_ITEMS_PER_PAGE);
 
@@ -101,7 +98,6 @@ const getItem = async (id: string): Promise<Item> => {
     })
     .from(ItemTable)
     .where(eq(ItemTable.itemId, id))
-    .leftJoin(CategoryTable, eq(ItemTable.categoryId, CategoryTable.categoryId))
     .leftJoin(LootTypeTable, eq(ItemTable.lootTypeId, LootTypeTable.lootTypeId))
     .leftJoin(
       ItemVariantsTable,
@@ -111,7 +107,7 @@ const getItem = async (id: string): Promise<Item> => {
       referencedItems,
       eq(referencedItems.itemId, ItemVariantsTable.itemId)
     )
-    .groupBy(ItemTable.itemId, CategoryTable.category, LootTypeTable.lootType);
+    .groupBy(ItemTable.itemId, LootTypeTable.lootType);
   return item;
 };
 
@@ -142,7 +138,6 @@ const getEquipment = async (query?: QueryParameters): Promise<Item[]> => {
     })
     .from(ItemTable)
     .where(and(...whereConditions))
-    .leftJoin(CategoryTable, eq(CategoryTable.categoryId, ItemTable.categoryId))
     .leftJoin(LootTypeTable, eq(ItemTable.lootTypeId, LootTypeTable.lootTypeId))
     .leftJoin(
       ItemVariantsTable,
@@ -152,7 +147,7 @@ const getEquipment = async (query?: QueryParameters): Promise<Item[]> => {
       referencedItems,
       eq(referencedItems.itemId, ItemVariantsTable.itemId)
     )
-    .groupBy(ItemTable.itemId, CategoryTable.category, LootTypeTable.lootType)
+    .groupBy(ItemTable.itemId, LootTypeTable.lootType)
     .orderBy(...sortConditions, asc(ItemTable.name), desc(ItemTable.rarity))
     .offset(from)
     .limit(MAX_ITEMS_PER_PAGE);
@@ -217,14 +212,8 @@ const getEquipmentWeapons = async (
       referencedItems,
       eq(referencedItems.itemId, ItemVariantsTable.itemId)
     )
-    .leftJoin(CategoryTable, eq(ItemTable.categoryId, CategoryTable.categoryId))
     .leftJoin(LootTypeTable, eq(ItemTable.lootTypeId, LootTypeTable.lootTypeId))
-    .groupBy(
-      ItemTable.itemId,
-      CategoryTable.category,
-      WeaponTable.weaponId,
-      LootTypeTable.lootType
-    )
+    .groupBy(ItemTable.itemId, WeaponTable.weaponId, LootTypeTable.lootType)
     .orderBy(...sortConditions, asc(ItemTable.name), desc(ItemTable.rarity))
     .offset(from)
     .limit(MAX_ITEMS_PER_PAGE);
@@ -284,14 +273,8 @@ const getEquipmentOther = async (query?: QueryParameters): Promise<Item[]> => {
       referencedItems,
       eq(referencedItems.itemId, ItemVariantsTable.itemId)
     )
-    .leftJoin(CategoryTable, eq(CategoryTable.categoryId, ItemTable.categoryId))
     .leftJoin(LootTypeTable, eq(ItemTable.lootTypeId, LootTypeTable.lootTypeId))
-    .groupBy(
-      ItemTable.itemId,
-      CategoryTable.category,
-      WeaponTable.weaponId,
-      LootTypeTable.lootType
-    )
+    .groupBy(ItemTable.itemId, WeaponTable.weaponId, LootTypeTable.lootType)
     .orderBy(...sortConditions, asc(ItemTable.name), desc(ItemTable.rarity))
     .where(
       and(
@@ -334,7 +317,6 @@ const getEquipmentOtherCount = async (query?: {
 
 const materialFields = {
   ...baseFields,
-  category: CategoryTable.category,
   subCategory: LootTypeTable.lootType,
 };
 
@@ -351,7 +333,6 @@ const getMaterials = async (query?: QueryParameters): Promise<Material[]> => {
   const materials = await db
     .select(materialFields)
     .from(ItemTable)
-    .leftJoin(CategoryTable, eq(ItemTable.categoryId, CategoryTable.categoryId))
     .leftJoin(LootTypeTable, eq(ItemTable.lootTypeId, LootTypeTable.lootTypeId))
     .where(and(...whereConditions))
     .orderBy(...sortConditions, asc(ItemTable.name), desc(ItemTable.rarity))

@@ -2,6 +2,7 @@ import {
   integer,
   jsonb,
   numeric,
+  pgEnum,
   pgTable,
   primaryKey,
   text,
@@ -10,16 +11,14 @@ import {
 import {
   AmmoTypeEnum,
   AttachmentSlotEnum,
+  CategoryEnum,
   ItemTypeEnum,
   SlotEnum,
-  TypeEnum,
 } from "./enums";
-import { CategoryTable } from "./categories";
 import { LootTypeTable } from "./lootTypes";
 
 export const ItemTable = pgTable("items", {
   itemId: varchar("item_id", { length: 255 }).unique().primaryKey(),
-  type: TypeEnum("type").notNull(),
   itemType: ItemTypeEnum("item_type").notNull(),
   name: varchar("name", { length: 50 }).notNull(),
   icon: varchar("icon", { length: 255 }).notNull(),
@@ -29,12 +28,7 @@ export const ItemTable = pgTable("items", {
   equipableSlots: SlotEnum("equipable_slots").array(),
   description: text("description").default("This item has no description."),
   baseValue: integer("base_value"),
-  categoryId: integer("category_id").references(
-    () => CategoryTable.categoryId,
-    {
-      onDelete: "set null",
-    }
-  ),
+  category: CategoryEnum("category").notNull(),
   lootTypeId: integer("loot_type_id").references(
     () => LootTypeTable.lootTypeId,
     {

@@ -1,15 +1,19 @@
 import { pgEnum } from "drizzle-orm/pg-core";
 
+export const CategoryEnum = pgEnum("category_enum", [
+  "technology",
+  "civilian",
+  "weapon",
+]);
+
 export const SlotEnum = pgEnum("slot_enum", [
-  "primaryWeapon",
-  "secondaryWeapon",
+  "primary",
+  "secondary",
   "quickslot",
   "armor",
   "gadget",
   "backpack",
 ]);
-
-export const TypeEnum = pgEnum("type_enum", ["item", "mission", "enemy"]);
 
 export const ItemTypeEnum = pgEnum("item_type_enum", [
   "equipment",

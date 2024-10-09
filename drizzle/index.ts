@@ -1,5 +1,4 @@
 export * from "./schemas/enums";
-export * from "./schemas/categories";
 export * from "./schemas/maps";
 export * from "./schemas/lootTypes";
 export * from "./schemas/items";

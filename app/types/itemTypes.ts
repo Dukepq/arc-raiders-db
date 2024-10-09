@@ -1,6 +1,5 @@
 import {
   AttachmentTableSelect,
-  CategoryTableSelect,
   ConsumableTableSelect,
   MaterialTableSelect,
   WeaponTableSelect,
@@ -15,9 +14,7 @@ export type Variant = {
 } | null;
 
 export type Item = Omit<
-  ItemTableSelect &
-    CategoryTableSelect &
-    ItemTableSelect & { variants: Variant[] },
+  ItemTableSelect & ItemTableSelect & { variants: Variant[] },
   "categoryId" | "lootTypeId"
 >;
 export type Weapon = Item & Omit<WeaponTableSelect, "weaponId">;
