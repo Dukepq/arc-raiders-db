@@ -10,6 +10,7 @@ import cn from "../utils/cn";
 import { fetchItemsWithAmountMatching } from "../lib/data/api";
 import { Loader2 } from "lucide-react";
 import ProgressLink from "./ui/ProgressLink";
+import useFocusOnKeyPress from "../hooks/useFocusOnKeyPress";
 
 export default function NavSearchBar() {
   const router = useRouter();
@@ -144,6 +145,13 @@ export default function NavSearchBar() {
     })();
   }, [debouncedSearch]);
 
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useFocusOnKeyPress(inputRef, {
+    ctrlKey: true,
+    keys: [":"],
+  });
+
   let itemList: React.ReactNode | undefined;
 
   if (debouncedSearch.length >= 3) {
@@ -197,6 +205,7 @@ export default function NavSearchBar() {
       <Popover.Trigger asChild>
         <div className="relative">
           <SearchBar
+            ref={inputRef}
             autoComplete="off"
             onKeyDown={handleKeyDown}
             id="nav-input"
@@ -207,12 +216,18 @@ export default function NavSearchBar() {
               setModalOpen(() => true);
               setSearch(e.target.value);
             }}
+            className="pr-16"
           />
-          {displayLoader && (
+
+          {displayLoader ? (
             <Loader2
               size={18}
               className="animate-spin absolute right-2 top-2"
             />
+          ) : (
+            <span className="absolute right-1.5 top-1.5 font-extralight text-[13px] text-text/60 border border-text/20 rounded-sm px-1">
+              Ctrl + /
+            </span>
           )}
         </div>
       </Popover.Trigger>
