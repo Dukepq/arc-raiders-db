@@ -16,16 +16,8 @@ import cn from "../utils/cn";
 import { Button, buttonOptions } from "./ui/Button";
 import EditProfileForm from "./EditProfileForm";
 import { useState } from "react";
-import PopoverWrap from "./ui/PopoverWrap";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardPortal,
-  HoverCardTrigger,
-} from "@radix-ui/react-hover-card";
 import Container from "./ui/Container";
 import { DialogTitle } from "./ui/Dialog";
-import DL from "../server/data-layer";
 import { useSessionContext } from "../context/sessionContext";
 import logging from "../lib/logging";
 import { deleteUserAction } from "../server/actions";
@@ -95,6 +87,7 @@ export function EditProfileModal() {
       <Dialog.Overlay className="bg-backdrop-darker data-[state=open]:animate-overlayShow fixed inset-0 opacity-50 z-[80]" />
       <Dialog.Content
         title={undefined}
+        aria-describedby={undefined}
         className="data-[state=open]:animate-modalSlideUpAndFade fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] z-[100]"
       >
         <Dialog.DialogClose className="absolute top-1 right-1">
