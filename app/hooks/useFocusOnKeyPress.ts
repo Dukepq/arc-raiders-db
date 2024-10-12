@@ -13,6 +13,7 @@ export default function useFocusOnKeyPress(
       if (keyOptions.altKey && !e.altKey) return;
       if (keyOptions.shiftKey && !e.shiftKey) return;
       if (!keyOptions.keys.includes(e.key)) return;
+      else e.preventDefault();
 
       ref.current.focus();
     };
@@ -20,5 +21,10 @@ export default function useFocusOnKeyPress(
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [
+    keyOptions.ctrlKey,
+    keyOptions.altKey,
+    keyOptions.shiftKey,
+    ...keyOptions.keys,
+  ]);
 }

@@ -6,6 +6,7 @@ import Comment from "./Comment";
 import { SignInButton } from "@/app/_components/SignInButton";
 import { Loader2 } from "lucide-react";
 import { useCommentContext } from "@/app/context/commentContext";
+import mutationPermitted from "@/app/lib/mutationPermitted";
 
 export default function ItemCommentSection() {
   const { user } = useSessionContext();
@@ -37,7 +38,7 @@ export default function ItemCommentSection() {
                     createdAt={comment.createdAt}
                     username={comment.username}
                     commentId={comment.commentId}
-                    deleteAble={comment.userId === user?.userId}
+                    deleteAble={mutationPermitted(user, comment.userId)}
                   />
                 );
               })}

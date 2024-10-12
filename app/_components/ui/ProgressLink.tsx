@@ -5,7 +5,7 @@ import Link, { LinkProps } from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { forwardRef, startTransition } from "react";
 
-type ProgressLinkProps = {
+export type ProgressLinkProps = {
   children: React.ReactNode;
   href: string;
   whenClicked?: (e: React.MouseEvent<HTMLAnchorElement>) => void;

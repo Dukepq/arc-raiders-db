@@ -19,7 +19,7 @@ export default function ImageWithSpinner({
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, []);
+  }, [delay]);
   return (
     <>
       <Image

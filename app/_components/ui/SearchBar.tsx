@@ -2,8 +2,7 @@
 
 import cn from "../../utils/cn";
 import { cva, VariantProps } from "class-variance-authority";
-import { SearchIcon } from "lucide-react";
-import { forwardRef, useEffect, useRef } from "react";
+import { forwardRef } from "react";
 
 const searchBarOptions = cva("outline-none font-light px-3 py-1.5 text-sm", {
   variants: {
@@ -26,6 +25,7 @@ const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
         <input
           {...props}
           ref={forwardedRef}
+          spellCheck={false}
           placeholder="Search items..."
           type="text"
           className={cn(

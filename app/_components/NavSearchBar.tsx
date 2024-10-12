@@ -148,8 +148,7 @@ export default function NavSearchBar() {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   useFocusOnKeyPress(inputRef, {
-    ctrlKey: true,
-    keys: [":"],
+    keys: ["/"],
   });
 
   let itemList: React.ReactNode | undefined;
@@ -194,9 +193,7 @@ export default function NavSearchBar() {
     );
   } else {
     itemList = (
-      <div className="bg-backdrop/20 p-2 text-center text-sm">
-        start typing to search
-      </div>
+      <div className="p-2 text-center text-sm">start typing to search</div>
     );
   }
 
@@ -225,8 +222,8 @@ export default function NavSearchBar() {
               className="animate-spin absolute right-2 top-2"
             />
           ) : (
-            <span className="absolute right-1.5 top-1.5 font-extralight text-[13px] text-text/60 border border-text/20 rounded-sm px-1">
-              Ctrl + /
+            <span className="absolute grid place-content-center right-1.5 top-[7px] font-extralight text-[13px] text-text/60 border border-text/20 rounded-sm w-5 h-5">
+              /
             </span>
           )}
         </div>
@@ -238,7 +235,7 @@ export default function NavSearchBar() {
             if ("nav-input" !== e.target?.id) setModalOpen(() => false);
           }}
           onOpenAutoFocus={(e) => e.preventDefault()}
-          className="bg-red backdrop-blur-md w-60"
+          className="bg-backdrop/85 backdrop-blur-md w-[259px]"
         >
           {itemList}
         </Popover.Content>
