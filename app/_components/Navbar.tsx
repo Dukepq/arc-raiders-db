@@ -20,7 +20,7 @@ export default function Navbar() {
   const [valueOpen, setValueOpen] = useState<string>("");
   return (
     <>
-      <div className="flex justify-between relative top-0 left-0 bg-backdrop px-3 text-nowrap z-[200] font-semibold">
+      <header className="flex justify-between relative top-0 left-0 bg-backdrop px-3 text-nowrap z-[200] font-semibold">
         <NavMenu
           value={valueOpen}
           onValueChange={(value) => setValueOpen(value)}
@@ -94,7 +94,7 @@ export default function Navbar() {
           <SignInOutButton />
           <NavSearchBar />
         </div>
-      </div>
+      </header>
       {/*    <nav
       aria-label="primary navigation"
       className="relative top-0 left-0 bg-backdrop px-3 text-nowrap z-50"
