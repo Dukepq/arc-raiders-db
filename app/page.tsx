@@ -1,13 +1,6 @@
 import { buttonOptions } from "./_components/ui/Button";
-import Link from "next/link";
 import cn from "./utils/cn";
-import TrendingSection, {
-  TrendingSectionSkeleton,
-} from "./_components/TrendingSection";
-import { Suspense } from "react";
 import Image from "next/image";
-import mapImage from "@/public/blank.png";
-import { Map } from "lucide-react";
 import Footer from "./_components/Footer";
 import ProgressLink from "./_components/ui/ProgressLink";
 

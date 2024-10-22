@@ -7,8 +7,11 @@ export default async function Page({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const equipment = await getDatabaseItems(DL.query.items.getEquipment);
-
+  const equipment = await getDatabaseItems(
+    DL.query.items.getEquipment,
+    searchParams
+  );
+  console.log(searchParams);
   return (
     <GenericItemTableRenderer items={equipment} searchParams={searchParams} />
   );
