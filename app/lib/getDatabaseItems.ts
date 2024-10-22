@@ -4,7 +4,6 @@ import { searchParamSchema } from "./validation/searchParamSchemas";
 
 export default async function getDatabaseItems<T>(
   getItems: (q: QueryParameters) => T,
-  getItemsCount: (q: QueryParameters) => Promise<number>,
   searchParams?: { [key: string]: string | string[] | undefined }
 ) {
   const { data, success } = searchParamSchema.safeParse(searchParams ?? {});
@@ -15,9 +14,7 @@ export default async function getDatabaseItems<T>(
     rarity: rarityNameToNum(resultData.rarity),
   };
 
-  const itemsPromise = getItems(q);
-  const countPromise = getItemsCount(q);
-  const [items, count] = await Promise.all([itemsPromise, countPromise]);
+  const items = await getItems(q);
 
-  return [items, count] as const;
+  return items;
 }

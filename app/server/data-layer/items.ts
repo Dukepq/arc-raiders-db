@@ -42,7 +42,7 @@ const itemFields = {
 };
 
 const getItems = async (query?: QueryParameters): Promise<Item[]> => {
-  const page = Number(query?.page);
+  const page = Number(query?.page ?? 1);
   const from = Math.max(page - 1, 0) * MAX_ITEMS_PER_PAGE;
 
   const whereConditions = whereConditionBuilder(

@@ -13,7 +13,6 @@ import { MAX_ITEMS_PER_PAGE } from "@/app/config/constants";
 
 type GenericItemTableRendererProps = {
   items: (Omit<Item, "variants"> & Partial<Pick<Item, "variants">>)[];
-  count: number;
   searchParams?:
     | {
         [key: string]: string | string[] | undefined;
@@ -22,7 +21,6 @@ type GenericItemTableRendererProps = {
 };
 export function GenericItemTableRenderer({
   items,
-  count,
   searchParams,
 }: GenericItemTableRendererProps) {
   return (
@@ -78,11 +76,7 @@ export function GenericItemTableRenderer({
         </GenericItemTable>
       </div>
       <div className="flex justify-center sticky bottom-3 my-3">
-        <Pagination
-          totalItems={count}
-          searchParams={searchParams}
-          maxItemsPerPage={MAX_ITEMS_PER_PAGE}
-        ></Pagination>
+        <Pagination itemsLength={items.length} searchParams={searchParams} />
       </div>
     </>
   );

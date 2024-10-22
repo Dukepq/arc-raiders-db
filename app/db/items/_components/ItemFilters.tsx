@@ -15,12 +15,15 @@ reproduce: page load -> apply search param -> refresh page -> remove search para
 SOLVED: in next 14.2.5 https://github.com/vercel/next.js/issues/64978#issuecomment-2200184303
 */
 
-export default function ItemFilters() {
+type ItemFiltersProps = React.AllHTMLAttributes<HTMLDivElement>;
+export default function ItemFilters({ className, ...props }: ItemFiltersProps) {
   return (
     <div
-      className="rounded-sm mb-3 overflow-auto flex items-center
-      [&>button]:flex [&>button]:items-center [&>button]:gap-1 [&>button]:bg-backdrop
-      [&>button]:px-3 [&>button]:py-1.5 [&>button]:outline-none gap-3"
+      className={cn(
+        "rounded-sm mb-3 overflow-auto flex items-center [&>button]:flex [&>button]:items-center [&>button]:gap-1 [&>button]:bg-backdrop [&>button]:px-3 [&>button]:py-1.5 [&>button]:outline-none gap-3",
+        className
+      )}
+      {...props}
     >
       <Suspense fallback={<ItemFilterButtonSkeleton />}>
         <RarityFilter />

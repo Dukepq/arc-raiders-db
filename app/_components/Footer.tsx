@@ -14,7 +14,7 @@ export default function Footer() {
                 <ProgressLink
                   prefetch={false}
                   className="hover:text-text/100"
-                  href="/db/search/items"
+                  href="/db/items"
                 >
                   items
                 </ProgressLink>

@@ -7,18 +7,11 @@ export default async function Page({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const [other, count] = await getDatabaseItems(
+  const other = await getDatabaseItems(
     DL.query.items.getEquipmentOther,
-    DL.query.items.getEquipmentOtherCount,
     searchParams
   );
   if (!other) return null;
 
-  return (
-    <GenericItemTableRenderer
-      count={count}
-      items={other}
-      searchParams={searchParams}
-    />
-  );
+  return <GenericItemTableRenderer items={other} searchParams={searchParams} />;
 }

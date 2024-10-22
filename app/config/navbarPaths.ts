@@ -1,7 +1,7 @@
 export const paths = {
-  db: "/db/search",
-  dbItems: "/db/search/items",
-  dbEnemies: "/db/search/enemies",
+  db: "/db",
+  dbItems: "/db/items",
+  dbEnemies: "/db/enemies",
   maps: "/maps",
   equipment: "/equipment",
   news: "/news",

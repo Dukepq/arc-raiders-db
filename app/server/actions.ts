@@ -31,24 +31,28 @@ export const createItemCommentAction = async (
     const { content, itemId } = createItemCommentActionSchema.parse(comment);
     const parsedRevalidatePathname = z.string().parse(revalidate);
 
-    const [recentComments] = await DL.query.users.getUserComments(user.userId, {
-      limit: 1,
-      offset: commentConfig.cooldown.offset,
-    });
-    const commentDate = recentComments?.createdAt as Date | undefined;
-    if (commentDate) {
-      const elapsedSinceComment = Date.now() - commentDate.getTime();
-      const commentingAllowed =
-        commentDate && elapsedSinceComment > commentConfig.cooldown.timespan;
+    const commentsSinceDate = new Date(
+      Date.now() - commentConfig.cooldown.timespan
+    );
+    const commentsSince = await DL.query.users.getUserCommentsSince(
+      user.userId,
+      { since: commentsSinceDate, limit: 1 }
+    );
 
-      if (!commentingAllowed) {
-        return {
-          success: false,
-          message: `Please wait ${Math.ceil(
-            (commentConfig.cooldown.timespan - elapsedSinceComment) / 1000 / 60
-          )} minutes before commenting again.`,
-        };
-      }
+    const commentAllowed = commentsSince.length < commentConfig.cooldown.amount;
+
+    const mostRecentComment = commentsSince[0];
+    const elapsedSinceComment = mostRecentComment
+      ? Date.now() - mostRecentComment.createdAt.getTime()
+      : 0;
+
+    if (!commentAllowed) {
+      return {
+        success: false,
+        message: `Please wait ${Math.ceil(
+          (commentConfig.cooldown.timespan - elapsedSinceComment) / 1000 / 60
+        )} minutes before commenting again.`,
+      };
     }
 
     const filteredComment = await profanityFilter.censorProfanity(content);

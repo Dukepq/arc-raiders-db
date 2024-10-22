@@ -26,7 +26,7 @@ export default function Page() {
               more.
             </p>
             <ProgressLink
-              href={"/db/search"}
+              href={"/db"}
               className={cn(
                 buttonOptions({ variant: "default", size: "lg" }),
                 "mt-4 inline-block"

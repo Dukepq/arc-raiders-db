@@ -1,6 +1,6 @@
 export type Rarities = "common" | "uncommon" | "rare" | "scarce";
 export const rarities = ["common", "uncommon", "rare", "scarce"] as const;
-export const MAX_ITEMS_PER_PAGE = 8;
+export const MAX_ITEMS_PER_PAGE = 2;
 export const ALLOWED_SEARCH_PARAMS = ["page", "rarity", "sort", "type"];
 export const ALLOWED_SORTING_FIELD_NAMES = ["name", "weight"];
 export const MAP_WIDTH = 1600;
@@ -9,6 +9,7 @@ export const commentConfig = {
   cooldown: {
     offset: 0,
     timespan: 1000 * 60 * 3,
+    amount: 1,
   },
   loading: {
     loadAmount: 6,

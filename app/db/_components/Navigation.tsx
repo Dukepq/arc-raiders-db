@@ -1,5 +1,7 @@
 "use client";
 
+// DEPRECATED
+
 import Link, { LinkProps } from "next/link";
 import cn from "@/app/utils/cn";
 import { useState, useEffect } from "react";
@@ -31,33 +33,30 @@ export default function Navigation() {
         <ExpandableList
           trigger={"Items"}
           defaultOpen={true}
-          pathname="/db/search/items"
+          pathname="/db/items"
         >
-          <NavLinkItem href={"/db/search/items"}>
+          <NavLinkItem href={"/db/items"}>
             <Grid2X2 size={16} />
             <span>All items</span>
           </NavLinkItem>
-          <ExpandableList
-            trigger={"Equipment"}
-            pathname="/db/search/items/equipment"
-          >
-            <NavLinkItem href={"/db/search/items/equipment"}>
+          <ExpandableList trigger={"Equipment"} pathname="/db/items/equipment">
+            <NavLinkItem href={"/db/items/equipment"}>
               <Backpack size={15} />
               <span>All equipment</span>
             </NavLinkItem>
-            <NavLinkItem href={"/db/search/items/equipment/weapons"}>
+            <NavLinkItem href={"/db/items/equipment/weapons"}>
               <Swords size={15} /> <span>Weapons</span>
             </NavLinkItem>
-            <NavLinkItem href={"/db/search/items/equipment/other"}>
+            <NavLinkItem href={"/db/items/equipment/other"}>
               <Ellipsis size={15} />
               <span>Other</span>
             </NavLinkItem>
           </ExpandableList>
-          <NavLinkItem href={"/db/search/items/materials"}>
+          <NavLinkItem href={"/db/items/materials"}>
             <Weight size={15} />
             <span>Materials</span>
           </NavLinkItem>
-          <NavLinkItem href={"/db/search/items/miscellaneous"}>
+          <NavLinkItem href={"/db/items/miscellaneous"}>
             <Weight size={15} />
             <span>Miscellaneous</span>
           </NavLinkItem>

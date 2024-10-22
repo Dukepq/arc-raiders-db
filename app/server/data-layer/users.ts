@@ -9,7 +9,7 @@ import {
   CommentTable,
 } from "@/drizzle";
 import { db } from "@/drizzle/db";
-import { and, desc, eq, or, sql } from "drizzle-orm";
+import { and, desc, eq, gt, lt, or, sql } from "drizzle-orm";
 
 const selectUserFields = {
   userId: UserTable.userId,
@@ -60,6 +60,26 @@ export const usersDL = {
           or(eq(UserTable.email, email), eq(UserTable.username, username))
         );
       return users;
+    },
+    getUserCommentsSince: async (
+      userId: string,
+      options: {
+        since: Date;
+        limit?: number;
+      }
+    ) => {
+      const q = db
+        .select()
+        .from(CommentTable)
+        .where(gt(CommentTable.createdAt, options.since))
+        .orderBy(CommentTable.createdAt);
+
+      if (options.limit) {
+        q.limit(options.limit);
+      }
+      const comments = await q;
+
+      return comments;
     },
     getUserComments: async (
       userId: string,
